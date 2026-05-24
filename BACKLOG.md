@@ -76,7 +76,7 @@ ADRs:
 
 ---
 
-## #003 Cart Page with Editable Quantities status: todo
+## #003 Cart Page with Editable Quantities status: in-progress
 
 Why: Users can add products to the cart but have no way to view, edit quantities, or initiate checkout.
 What: Add a /cart route that lists cart items with live-editable quantity steppers, a running grand total, and an "Order placed successfully!" confirmation on checkout.
