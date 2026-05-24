@@ -5,6 +5,7 @@ const products = [
     price: 79.99,
     description: 'Premium over-ear headphones with active noise cancellation and 30-hour battery life.',
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop&auto=format',
+    featured: true,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ const products = [
     price: 149.99,
     description: 'Sleek stainless steel watch with sapphire crystal glass and 5ATM water resistance.',
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&auto=format',
+    featured: true,
   },
   {
     id: 4,
@@ -40,6 +42,7 @@ const products = [
     price: 699.99,
     description: '24.2MP digital camera with 4K video, built-in Wi-Fi, and a versatile 18-55mm kit lens.',
     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop&auto=format',
+    featured: true,
   },
   {
     id: 7,

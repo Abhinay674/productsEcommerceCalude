@@ -1,9 +1,11 @@
 import React from 'react';
 import ProductCard from '../components/ProductCard';
+import FeaturedCarousel from '../components/FeaturedCarousel';
 import products from '../data/products';
 
 const ProductListingPage = () => (
   <main style={styles.main}>
+    <FeaturedCarousel />
     <h1 style={styles.heading}>All Products</h1>
     <div style={styles.grid}>
       {products.map(product => (

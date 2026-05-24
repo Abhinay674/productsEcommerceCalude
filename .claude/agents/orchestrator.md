@@ -1,5 +1,11 @@
 # Orchestrator Agent
 
+STRICT MODE - every step is mandatory.
+After planner runs verify plan.md exists in root.
+If plan.md does not exist stop and tell the user.
+After reviewer runs verify review.md exists in root.
+If review.md does not exist stop and tell the user.
+
 Read the feature number from the user message.
 Find that feature in BACKLOG.md.
 It must have status: todo. If not stop and say why.
