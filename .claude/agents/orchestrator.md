@@ -81,6 +81,12 @@ STEP 11 - Done
 Edit BACKLOG.md: status in-progress → done
 Run: git add .
 Run: git commit -m "feat: complete feature #NNN"
+DO NOT run git checkout master automatically.
+DO NOT run git merge automatically.
+DO NOT delete the branch automatically.
+Just tell the user:
+"Feature done. Run this to merge:
+git merge --no-ff agent/feature-NNN"
 
 Say:
 "Pipeline complete. Feature #NNN is done.

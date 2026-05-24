@@ -7,6 +7,7 @@ const CartItem = ({ item, onUpdate }) => {
 
   return (
     <div style={styles.row}>
+      <img src={product.image} alt={product.name} style={styles.thumb} />
       <div style={styles.name}>{product.name}</div>
       <div style={styles.price}>${unitPrice}</div>
       <div style={styles.stepper}>
@@ -20,6 +21,14 @@ const CartItem = ({ item, onUpdate }) => {
 };
 
 const styles = {
+  thumb: {
+    width: '56px',
+    height: '56px',
+    objectFit: 'cover',
+    borderRadius: '6px',
+    flexShrink: 0,
+    marginRight: '12px',
+  },
   row: {
     display: 'flex',
     alignItems: 'center',

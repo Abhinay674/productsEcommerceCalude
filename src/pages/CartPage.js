@@ -31,7 +31,8 @@ const CartPage = () => {
           Grand Total: <span style={styles.totalAmount}>${grandTotal.toFixed(2)}</span>
         </div>
         <button
-          style={styles.payBtn}
+          style={{ ...styles.payBtn, ...(items.length === 0 ? styles.payBtnDisabled : {}) }}
+          disabled={items.length === 0}
           onClick={() => window.alert('Order placed successfully!')}
         >
           Proceed to Payment
@@ -89,6 +90,10 @@ const styles = {
     fontSize: '15px',
     fontWeight: '700',
     cursor: 'pointer',
+  },
+  payBtnDisabled: {
+    background: '#ccc',
+    cursor: 'not-allowed',
   },
 };
 
