@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import HamburgerMenu from './HamburgerMenu';
 
 const Navbar = () => {
   const { cartCount } = useCart();
@@ -8,6 +9,7 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <Link to="/" style={styles.brand}>ShopReact</Link>
+      <HamburgerMenu />
       <Link to="/cart" style={styles.cartLink}>
         Cart
         {cartCount > 0 && (
