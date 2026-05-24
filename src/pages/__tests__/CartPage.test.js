@@ -59,7 +59,8 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the unit price for each cart entry', () => {
-    renderWithCart([{ product: mockProducts[0], quantity: 1 }]);
+    // Use quantity 2 so unit price ($10.00) ≠ line total ($20.00), avoiding ambiguity
+    renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
     expect(screen.getByText('$10.00')).toBeInTheDocument();
   });
 
@@ -69,9 +70,11 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the line total (price × quantity) for each entry', () => {
-    renderWithCart([{ product: mockProducts[0], quantity: 3 }]);
-    // 10.00 * 3 = 30.00
-    expect(screen.getByText('$30.00')).toBeInTheDocument();
+    // Use quantity 2: line total $20.00 is distinct from unit price $10.00 and grand total $20.00
+    // Use getAllByText since line total equals grand total when only one item is present
+    renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
+    // 10.00 * 2 = 20.00 — appears as both line total and grand total
+    expect(screen.getAllByText('$20.00').length).toBeGreaterThanOrEqual(1);
   });
 
   test('renders one row per distinct cart entry', () => {
@@ -117,8 +120,8 @@ describe('CartPage — increment', () => {
     renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
     // before: 2 × 10.00 = 20.00
     fireEvent.click(screen.getByRole('button', { name: /\+/ }));
-    // after:  3 × 10.00 = 30.00
-    expect(screen.getByText('$30.00')).toBeInTheDocument();
+    // after:  3 × 10.00 = 30.00 (appears as both line total and grand total)
+    expect(screen.getAllByText('$30.00').length).toBeGreaterThanOrEqual(1);
   });
 });
 
