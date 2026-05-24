@@ -76,7 +76,7 @@ ADRs:
 
 ---
 
-## #003 Cart Page with Editable Quantities status: in-progress
+## #003 Cart Page with Editable Quantities status: done
 
 Why: Users can add products to the cart but have no way to view, edit quantities, or initiate checkout.
 What: Add a /cart route that lists cart items with live-editable quantity steppers, a running grand total, and an "Order placed successfully!" confirmation on checkout.
@@ -113,3 +113,40 @@ ADRs:
 - CartItem is a separate component from CartPage — isolates stepper + line-total logic and mirrors the existing ProductDetailPage stepper pattern
 - Navbar Cart link changes from to="/" to to="/cart" — minimal change, badge count already works via cartCount from context
 - window.alert used for payment confirmation — honest placeholder, avoids building a fake /checkout page with no backend
+
+---
+
+## #004 Hamburger Menu with Category Navigation — status: done
+
+Why: Users cannot browse by product type — the single listing page mixes all items with no way to filter by category.
+What: Add a persistent hamburger side-drawer to the Navbar with 5 category links, each navigating to a dedicated page showing exactly 10 products.
+
+Patterns to follow:
+
+- Inline style objects defined as a `const styles = {}` block at the bottom of each component file (see `CartItem.js`, `ProductCard.js`)
+- Page components import `products` from `../data/products` and filter in the component body with `Array.filter()` (see `FeaturedCarousel.js` filtering `p.featured`)
+
+Interface contracts:
+
+- Product (extended): `{ id: number, name: string, price: number, description: string, image: string, category: string, featured?: boolean }`
+- Route: `/category/:slug` → `<CategoryPage />`
+- CategoryPage receives `slug` via `useParams()` and renders `products.filter(p => p.category === slug)`
+- HamburgerMenu: internal `useState(false)` for `isOpen`; no props required; renders inside `<Navbar />`
+- Category slugs: `"electronics"` | `"fashion"` | `"bags"` | `"books"` | `"sports"`
+
+Done criteria:
+
+- [ ] `HamburgerMenu` toggle button (☰) is present in the rendered `Navbar`; clicking it causes a drawer containing exactly 5 category links to appear in the DOM (`expect(links).toHaveLength(5)`)
+- [ ] Clicking a category link navigates to `/category/:slug` and `CategoryPage` renders exactly 10 `ProductCard` components for each of the 5 valid slugs (`expect(cards).toHaveLength(10)`)
+- [ ] Clicking the ☰ button a second time removes the drawer from the DOM (`expect(drawer).not.toBeInTheDocument()`)
+- [ ] Clicking a `ProductCard` on `CategoryPage` navigates to `/product/:id` matching that product's id (`expect(mockNavigate).toHaveBeenCalledWith('/product/${id}')`)
+- [ ] `ProductListingPage` at `/` still renders `FeaturedCarousel`; `CategoryPage` does NOT render `FeaturedCarousel` (`expect(carousel).not.toBeInTheDocument()`)
+
+Out of scope: search/keyword filter, responsive breakpoints, subcategories, nested menus, last-category persistence, pagination
+
+ADRs:
+
+- `HamburgerMenu` owns its own `isOpen` state via `useState` — no global/context state needed since the drawer has no cross-component consumers
+- `/category/:slug` URL route chosen over in-place filter so the URL is bookmarkable and browser back button works correctly
+- `category` field added directly to each product object in `products.js` — avoids a separate lookup map; filtering stays a single `Array.filter()` call
+- Carousel intentionally excluded from `CategoryPage` — avoids needing `featured` flags on 42 new products and keeps category views focused
