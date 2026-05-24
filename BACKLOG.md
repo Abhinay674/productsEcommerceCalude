@@ -116,7 +116,7 @@ ADRs:
 
 ---
 
-## #004 Hamburger Menu with Category Navigation — status: in-progress
+## #004 Hamburger Menu with Category Navigation — status: done
 
 Why: Users cannot browse by product type — the single listing page mixes all items with no way to filter by category.
 What: Add a persistent hamburger side-drawer to the Navbar with 5 category links, each navigating to a dedicated page showing exactly 10 products.
