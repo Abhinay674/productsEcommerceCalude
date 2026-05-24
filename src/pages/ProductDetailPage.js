@@ -35,7 +35,7 @@ const ProductDetailPage = () => {
         <img src={product.image} alt={product.name} style={styles.image} />
         <div style={styles.info}>
           <h1 style={styles.name}>{product.name}</h1>
-          <p style={styles.price}>${product.price.toFixed(2)}</p>
+          <p style={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
           <p style={styles.description}>{product.description}</p>
           <div style={styles.stepper}>
             <button onClick={decrement} style={styles.stepBtn} disabled={quantity === 1}>−</button>

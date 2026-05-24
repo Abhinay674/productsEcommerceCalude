@@ -28,7 +28,7 @@ const CartPage = () => {
       )}
       <div style={styles.footer}>
         <div style={styles.total}>
-          Grand Total: <span style={styles.totalAmount}>${grandTotal.toFixed(2)}</span>
+          Grand Total: <span style={styles.totalAmount}>₹{grandTotal.toLocaleString('en-IN')}</span>
         </div>
         <button
           style={{ ...styles.payBtn, ...(items.length === 0 ? styles.payBtnDisabled : {}) }}

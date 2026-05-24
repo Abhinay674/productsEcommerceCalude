@@ -2,20 +2,20 @@ import React from 'react';
 
 const CartItem = ({ item, onUpdate }) => {
   const { product, quantity } = item;
-  const unitPrice = product.price.toFixed(2);
-  const lineTotal = (product.price * quantity).toFixed(2);
+  const unitPrice = product.price.toLocaleString('en-IN');
+  const lineTotal = (product.price * quantity).toLocaleString('en-IN');
 
   return (
     <div style={styles.row}>
       <img src={product.image} alt={product.name} style={styles.thumb} />
       <div style={styles.name}>{product.name}</div>
-      <div style={styles.price}>${unitPrice}</div>
+      <div style={styles.price}>₹{unitPrice}</div>
       <div style={styles.stepper}>
         <button style={styles.stepBtn} onClick={() => onUpdate(quantity - 1)}>−</button>
         <span style={styles.qty}>{quantity}</span>
         <button style={styles.stepBtn} onClick={() => onUpdate(quantity + 1)}>+</button>
       </div>
-      <div style={styles.total}>${lineTotal}</div>
+      <div style={styles.total}>₹{lineTotal}</div>
     </div>
   );
 };
