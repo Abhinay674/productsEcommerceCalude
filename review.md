@@ -1,21 +1,11 @@
-GATE 1 VERDICT: APPROVE_PLAN
-All checks passed. Tester can proceed.
+GATE 5 VERDICT: APPROVE
+Summary: Feature #003 delivers a fully functional Cart Page with editable quantities. CartContext correctly centralises all cart mutation logic (addToCart, updateQuantity with auto-remove at <=0, removeFromCart, cartCount). CartItem is a pure presentational component receiving item + onUpdate props with no data fetching or business logic. CartPage reads context via useCart(), renders one row per item, shows an empty-state message when the cart is empty, computes the grand total as the sum of all (price × quantity) values, and triggers window.alert('Order placed successfully!') on checkout. The Navbar Cart link correctly points to /cart and App.js registers the /cart route. All 23 tests pass (including the 7-criterion suite), use real CartProvider instances and hand-rolled fakes with no jest.mock of modules, and exercise user-level behaviour. No console.log calls exist in any production file.
 
-## Detailed Check Results
-
-### Layering
-[YES] Components are presentational only (CartItem receives via props, no data fetching)
-[YES] CartPage wires context to component via useCart()
-[YES] No data logic planned inside components themselves
-
-### Interface Contracts
-[YES] updateQuantity signature matches BACKLOG (handles delete when <=0)
-[YES] removeFromCart signature matches BACKLOG
-[YES] CartItem props match BACKLOG (item + onUpdate)
-[YES] CartPage matches BACKLOG (no props, uses context)
-[YES] /cart route is planned
-
-### Completeness
-[YES] Every done criterion has at least one planned file that covers it
-[YES] Build order is logical (context before components before pages)
-[YES] All routes planned (/, /product/:id, /cart)
+DONE CRITERIA COVERAGE:
+[Criterion 1] Clicking "Cart" in the Navbar navigates to /cart → covered by CartPage.test.js: "Navbar — Cart link navigates to /cart > clicking the Cart link in the Navbar renders the CartPage at /cart"
+[Criterion 2] CartPage renders one CartItem row per entry showing product name, unit price, quantity, and line total → covered by CartPage.test.js: "CartPage — item rows > renders the product name for each cart entry", "renders the unit price for each cart entry", "renders the quantity for each cart entry", "renders the line total (price × quantity) for each entry", "renders one row per distinct cart entry"; and CartItem.test.js: "displays the product name", "displays the unit price formatted as $X.XX", "displays the current quantity", "displays the line total (price × quantity)"
+[Criterion 3] CartPage shows empty-state message when items array is empty → covered by CartPage.test.js: "CartPage — empty state > shows an empty-cart message when there are no items"
+[Criterion 4] Clicking "−" calls updateQuantity with quantity − 1; at quantity 1 the item is removed → covered by CartPage.test.js: "CartPage — decrement and removal > clicking '−' decrements quantity by 1", "when quantity is 1, clicking '−' removes the item from the list"; and CartItem.test.js: "clicking '−' calls onUpdate with quantity - 1", "when quantity is 1, clicking '−' calls onUpdate with 0 (triggers removal)"
+[Criterion 5] Clicking "+" calls updateQuantity with quantity + 1 and line total updates → covered by CartPage.test.js: "CartPage — increment > clicking '+' increments quantity by 1", "line total updates after clicking '+'"; and CartItem.test.js: "clicking '+' calls onUpdate with quantity + 1", "line total updates correctly when quantity changes"
+[Criterion 6] Grand total equals sum of all (price × quantity) → covered by CartPage.test.js: "CartPage — grand total > grand total equals sum of all line totals", "grand total is $0.00 when cart is empty"
+[Criterion 7] Clicking "Proceed to Payment" triggers window.alert with "Order placed successfully!" → covered by CartPage.test.js: "CartPage — Proceed to Payment > clicking 'Proceed to Payment' shows an alert with success message"
