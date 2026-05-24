@@ -8,8 +8,10 @@ const Navbar = () => {
 
   return (
     <nav style={styles.nav}>
-      <Link to="/" style={styles.brand}>ShopReact</Link>
-      <HamburgerMenu />
+      <div style={styles.left}>
+        <HamburgerMenu />
+        <Link to="/" style={styles.brand}>ShopReact</Link>
+      </div>
       <Link to="/cart" style={styles.cartLink}>
         Cart
         {cartCount > 0 && (
@@ -32,6 +34,10 @@ const styles = {
     position: 'sticky',
     top: 0,
     zIndex: 100,
+  },
+  left: {
+    display: 'flex',
+    alignItems: 'center',
   },
   brand: {
     color: '#fff',

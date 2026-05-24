@@ -3,7 +3,7 @@ const products = [
   {
     id: 1,
     name: 'Wireless Headphones',
-    price: 6699,
+    price: 79.99,
     description: 'Premium over-ear headphones with active noise cancellation and 30-hour battery life.',
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -12,7 +12,7 @@ const products = [
   {
     id: 2,
     name: 'Running Sneakers',
-    price: 9999,
+    price: 119.99,
     description: 'Lightweight and responsive running shoes with breathable mesh upper and cushioned sole.',
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -20,7 +20,7 @@ const products = [
   {
     id: 3,
     name: 'Minimalist Watch',
-    price: 12499,
+    price: 149.99,
     description: 'Sleek stainless steel watch with sapphire crystal glass and 5ATM water resistance.',
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -29,7 +29,7 @@ const products = [
   {
     id: 4,
     name: 'Laptop Backpack',
-    price: 4999,
+    price: 59.99,
     description: '30L travel backpack with padded laptop compartment, USB charging port, and anti-theft design.',
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -37,7 +37,7 @@ const products = [
   {
     id: 5,
     name: 'Polarized Sunglasses',
-    price: 4199,
+    price: 49.99,
     description: 'UV400 polarized lenses in a lightweight titanium frame. Ideal for outdoor activities.',
     image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -45,7 +45,7 @@ const products = [
   {
     id: 6,
     name: 'DSLR Camera',
-    price: 58999,
+    price: 699.99,
     description: '24.2MP digital camera with 4K video, built-in Wi-Fi, and a versatile 18-55mm kit lens.',
     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -54,7 +54,7 @@ const products = [
   {
     id: 7,
     name: 'Mechanical Keyboard',
-    price: 7499,
+    price: 89.99,
     description: 'Tenkeyless mechanical keyboard with Cherry MX switches, RGB backlighting, and aluminum body.',
     image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -62,7 +62,7 @@ const products = [
   {
     id: 8,
     name: 'Hardcover Notebook',
-    price: 1699,
+    price: 19.99,
     description: 'A5 dot-grid notebook with 200 acid-free pages, ribbon bookmark, and expandable pocket.',
     image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -72,7 +72,7 @@ const products = [
   {
     id: 9,
     name: 'Bluetooth Speaker',
-    price: 3499,
+    price: 41.99,
     description: 'Portable waterproof speaker with 360-degree sound and 12-hour playtime.',
     image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -80,7 +80,7 @@ const products = [
   {
     id: 10,
     name: 'Smart Watch',
-    price: 14999,
+    price: 179.99,
     description: 'Fitness smartwatch with heart-rate monitor, GPS, and 7-day battery life.',
     image: 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -88,7 +88,7 @@ const products = [
   {
     id: 11,
     name: 'USB-C Hub',
-    price: 2299,
+    price: 27.99,
     description: '7-in-1 USB-C hub with 4K HDMI, 100W PD charging, and SD card reader.',
     image: 'https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -96,7 +96,7 @@ const products = [
   {
     id: 12,
     name: 'Wireless Mouse',
-    price: 1899,
+    price: 22.99,
     description: 'Ergonomic wireless mouse with silent clicks, 12-month battery, and multi-device pairing.',
     image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -104,7 +104,7 @@ const products = [
   {
     id: 13,
     name: 'Noise Cancelling Earbuds',
-    price: 8999,
+    price: 107.99,
     description: 'True wireless earbuds with active noise cancellation and 24-hour total battery.',
     image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -112,7 +112,7 @@ const products = [
   {
     id: 14,
     name: 'Portable SSD',
-    price: 5499,
+    price: 64.99,
     description: '1TB portable SSD with USB 3.2 Gen 2 delivering up to 1050 MB/s read speed.',
     image: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -120,7 +120,7 @@ const products = [
   {
     id: 15,
     name: 'LED Desk Lamp',
-    price: 2799,
+    price: 33.99,
     description: 'Adjustable LED desk lamp with 5 color temperatures, USB charging port, and touch dimmer.',
     image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
@@ -130,7 +130,7 @@ const products = [
   {
     id: 16,
     name: 'Slim Fit Chinos',
-    price: 2499,
+    price: 29.99,
     description: 'Stretch-cotton slim chinos with a modern tapered leg and wrinkle-resistant finish.',
     image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -138,7 +138,7 @@ const products = [
   {
     id: 17,
     name: 'Classic Leather Belt',
-    price: 1299,
+    price: 15.99,
     description: 'Full-grain leather belt with a brushed silver buckle, available in multiple sizes.',
     image: 'https://images.unsplash.com/photo-1624890240392-35f8f8d3d4e1?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -146,7 +146,7 @@ const products = [
   {
     id: 18,
     name: 'Linen Casual Shirt',
-    price: 1999,
+    price: 23.99,
     description: 'Breathable 100% linen shirt perfect for summer days and casual occasions.',
     image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -154,7 +154,7 @@ const products = [
   {
     id: 19,
     name: 'Knit Beanie',
-    price: 699,
+    price: 8.49,
     description: 'Soft merino-wool blend beanie that keeps you warm on cold days.',
     image: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -162,7 +162,7 @@ const products = [
   {
     id: 20,
     name: 'Chelsea Boots',
-    price: 6999,
+    price: 84.99,
     description: 'Genuine leather Chelsea boots with elastic side panels and a stacked heel.',
     image: 'https://images.unsplash.com/photo-1542884748-2b87b36c6b90?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -170,7 +170,7 @@ const products = [
   {
     id: 21,
     name: 'Denim Jacket',
-    price: 3799,
+    price: 45.99,
     description: 'Classic stonewashed denim jacket with contrast stitching and chest pockets.',
     image: 'https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -178,7 +178,7 @@ const products = [
   {
     id: 22,
     name: 'Merino Wool Scarf',
-    price: 1499,
+    price: 17.99,
     description: 'Luxuriously soft merino wool scarf in a versatile herringbone weave.',
     image: 'https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
@@ -188,7 +188,7 @@ const products = [
   {
     id: 23,
     name: 'Canvas Tote Bag',
-    price: 899,
+    price: 10.99,
     description: 'Heavy-duty canvas tote with reinforced handles and a zippered inner pocket.',
     image: 'https://images.unsplash.com/photo-1591561954555-607968c989ab?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -196,7 +196,7 @@ const products = [
   {
     id: 24,
     name: 'Leather Messenger Bag',
-    price: 5499,
+    price: 64.99,
     description: 'Full-grain leather messenger bag with adjustable strap and multiple organiser pockets.',
     image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -204,15 +204,15 @@ const products = [
   {
     id: 25,
     name: 'Gym Duffel Bag',
-    price: 2199,
+    price: 26.99,
     description: 'Spacious 40L duffel bag with wet-dry compartment and ventilated shoe pocket.',
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a45?w=400&h=300&fit=crop&auto=format',
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
   },
   {
     id: 26,
     name: 'Crossbody Mini Bag',
-    price: 1799,
+    price: 21.99,
     description: 'Compact vegan leather crossbody bag with zip closure and detachable chain strap.',
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -220,7 +220,7 @@ const products = [
   {
     id: 27,
     name: 'Rolling Carry-On',
-    price: 8999,
+    price: 107.99,
     description: 'Hardshell 20-inch carry-on with 360-degree spinner wheels and TSA-approved lock.',
     image: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -228,15 +228,15 @@ const products = [
   {
     id: 28,
     name: 'Fanny Pack',
-    price: 999,
+    price: 11.99,
     description: 'Lightweight nylon fanny pack with adjustable waist strap and three zippered pockets.',
-    image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae55?w=400&h=300&fit=crop&auto=format',
+    image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
   },
   {
     id: 29,
     name: 'Leather Clutch',
-    price: 2999,
+    price: 35.99,
     description: 'Slim genuine leather clutch with card slots and a magnetic snap closure.',
     image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -244,7 +244,7 @@ const products = [
   {
     id: 30,
     name: 'Hiking Daypack',
-    price: 3799,
+    price: 45.99,
     description: '20L hiking daypack with hydration bladder sleeve and ergonomic shoulder straps.',
     image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
@@ -252,9 +252,9 @@ const products = [
   {
     id: 31,
     name: 'Drawstring Backpack',
-    price: 699,
+    price: 8.49,
     description: 'Lightweight polyester drawstring backpack, ideal for gym visits and daily commutes.',
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a80?w=400&h=300&fit=crop&auto=format',
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
   },
 
@@ -262,7 +262,7 @@ const products = [
   {
     id: 32,
     name: 'Atomic Habits',
-    price: 499,
+    price: 5.99,
     description: 'A proven framework for building good habits and breaking bad ones, by James Clear.',
     image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -270,7 +270,7 @@ const products = [
   {
     id: 33,
     name: 'The Design of Everyday Things',
-    price: 699,
+    price: 8.49,
     description: 'Don Norman\'s classic guide to human-centred design and why products succeed or fail.',
     image: 'https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -278,7 +278,7 @@ const products = [
   {
     id: 34,
     name: 'Deep Work',
-    price: 449,
+    price: 5.49,
     description: 'Cal Newport\'s rules for focused success in a distracted world.',
     image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -286,7 +286,7 @@ const products = [
   {
     id: 35,
     name: 'The Pragmatic Programmer',
-    price: 1299,
+    price: 15.99,
     description: 'A timeless guide to software craftsmanship for developers at every stage of their career.',
     image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -294,7 +294,7 @@ const products = [
   {
     id: 36,
     name: 'Thinking, Fast and Slow',
-    price: 599,
+    price: 7.49,
     description: 'Daniel Kahneman explores the two systems that drive the way we think and make decisions.',
     image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -302,7 +302,7 @@ const products = [
   {
     id: 37,
     name: 'Sapiens',
-    price: 549,
+    price: 6.99,
     description: 'Yuval Noah Harari\'s brief history of humankind from the Stone Age to the present.',
     image: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -310,7 +310,7 @@ const products = [
   {
     id: 38,
     name: 'Clean Code',
-    price: 999,
+    price: 11.99,
     description: 'Robert C. Martin\'s handbook of agile software craftsmanship and best coding practices.',
     image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -318,7 +318,7 @@ const products = [
   {
     id: 39,
     name: 'The Lean Startup',
-    price: 479,
+    price: 5.99,
     description: 'Eric Ries shows how continuous innovation creates radically successful businesses.',
     image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -326,7 +326,7 @@ const products = [
   {
     id: 40,
     name: 'Zero to One',
-    price: 399,
+    price: 4.99,
     description: 'Peter Thiel\'s notes on startups and how to build companies that create new things.',
     image: 'https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?w=400&h=300&fit=crop&auto=format',
     category: 'books',
@@ -336,7 +336,7 @@ const products = [
   {
     id: 41,
     name: 'Yoga Mat',
-    price: 1499,
+    price: 17.99,
     description: 'Non-slip 6mm TPE yoga mat with alignment lines and carrying strap.',
     image: 'https://images.unsplash.com/photo-1601925228946-d2571c7791e2?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -344,7 +344,7 @@ const products = [
   {
     id: 42,
     name: 'Resistance Bands Set',
-    price: 899,
+    price: 10.99,
     description: 'Set of 5 latex resistance bands for strength training, rehabilitation, and stretching.',
     image: 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -352,7 +352,7 @@ const products = [
   {
     id: 43,
     name: 'Adjustable Dumbbells',
-    price: 12999,
+    price: 154.99,
     description: 'Space-saving adjustable dumbbells ranging from 2.5 kg to 25 kg per hand.',
     image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -360,7 +360,7 @@ const products = [
   {
     id: 44,
     name: 'Jump Rope',
-    price: 599,
+    price: 7.49,
     description: 'Speed jump rope with ball-bearing handles and adjustable steel cable.',
     image: 'https://images.unsplash.com/photo-1601925228910-97773f40d3f3?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -368,7 +368,7 @@ const products = [
   {
     id: 45,
     name: 'Foam Roller',
-    price: 1199,
+    price: 14.99,
     description: 'High-density EVA foam roller for deep-tissue muscle recovery and myofascial release.',
     image: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -376,7 +376,7 @@ const products = [
   {
     id: 46,
     name: 'Cycling Helmet',
-    price: 2999,
+    price: 35.99,
     description: 'Aerodynamic cycling helmet with 18 vents, MIPS safety system, and adjustable fit dial.',
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -384,7 +384,7 @@ const products = [
   {
     id: 47,
     name: 'Tennis Racket',
-    price: 4499,
+    price: 53.99,
     description: 'Graphite-composite tennis racket with 100 sq. in. head size, ideal for intermediate players.',
     image: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -392,7 +392,7 @@ const products = [
   {
     id: 48,
     name: 'Swimming Goggles',
-    price: 799,
+    price: 9.99,
     description: 'Anti-fog UV-protection swim goggles with a comfortable silicone seal.',
     image: 'https://images.unsplash.com/photo-1600679472829-3044539ce405?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -400,7 +400,7 @@ const products = [
   {
     id: 49,
     name: 'Badminton Set',
-    price: 1899,
+    price: 22.99,
     description: 'Complete badminton set with 2 rackets, 3 shuttlecocks, and a carrying bag.',
     image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
@@ -408,7 +408,7 @@ const products = [
   {
     id: 50,
     name: 'Water Bottle 1L',
-    price: 699,
+    price: 8.49,
     description: 'BPA-free stainless steel insulated water bottle that keeps drinks cold for 24 hours.',
     image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
