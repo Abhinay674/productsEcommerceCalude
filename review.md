@@ -9,3 +9,8 @@ DONE CRITERIA COVERAGE:
 [Criterion 5] Clicking "+" calls updateQuantity with quantity + 1 and line total updates → covered by CartPage.test.js: "CartPage — increment > clicking '+' increments quantity by 1", "line total updates after clicking '+'"; and CartItem.test.js: "clicking '+' calls onUpdate with quantity + 1", "line total updates correctly when quantity changes"
 [Criterion 6] Grand total equals sum of all (price × quantity) → covered by CartPage.test.js: "CartPage — grand total > grand total equals sum of all line totals", "grand total is $0.00 when cart is empty"
 [Criterion 7] Clicking "Proceed to Payment" triggers window.alert with "Order placed successfully!" → covered by CartPage.test.js: "CartPage — Proceed to Payment > clicking 'Proceed to Payment' shows an alert with success message"
+
+STEP 10 COVERAGE CHECK NOTE:
+coverage-check.js flagged one criterion not addressed in review.md:
+  - "The active slide advances automatically to the next index every 3500ms without user interaction"
+This criterion belongs to Feature #002 (FeaturedCarousel). coverage-check.js scans ALL [ ] items in BACKLOG.md regardless of feature. Feature #003 review.md intentionally covers only #003 criteria. Pipeline continues per orchestrator rules (flag but do not stop).
