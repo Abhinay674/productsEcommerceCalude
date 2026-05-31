@@ -12,6 +12,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CategoryPage from './pages/CategoryPage';
 import WishlistPage from './pages/WishlistPage';
+import BackToTop from './components/BackToTop';
 
 const AppShell = () => {
   const { isDark } = useTheme();
@@ -25,6 +26,7 @@ const AppShell = () => {
         <Route path="/category/:slug" element={<CategoryPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
       </Routes>
+      <BackToTop />
     </div>
   );
 };
