@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider } from '../../context/CartContext';
 import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
 import ProductListingPage from '../ProductListingPage';
 
 jest.mock('../../components/FeaturedCarousel', () => () => (
@@ -17,9 +18,11 @@ const renderPage = () =>
   render(
     <MemoryRouter>
       <AuthProvider>
-        <CartProvider>
-          <ProductListingPage />
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <ProductListingPage />
+          </CartProvider>
+        </WishlistProvider>
       </AuthProvider>
     </MemoryRouter>
   );

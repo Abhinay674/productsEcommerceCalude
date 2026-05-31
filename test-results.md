@@ -1,20 +1,4 @@
-Tests passing: 76 of 76
-New tests added: 17
+Tests passing: 135 of 135
+New tests added: 48
 All done criteria covered: yes
-Notes:
-- All 59 pre-existing tests continued to pass unchanged.
-- 17 new tests added across 2 new files:
-  1. src/data/__tests__/products.data.test.js (12 tests)
-     - Verifies products.js exports exactly 50 products
-     - Verifies each of the 5 categories contains exactly 10 products
-     - Verifies every product has the required shape fields (id, name, price, description, image, category)
-     - Verifies all ids are unique positive integers numbered 1-50 sequentially
-     - Verifies all prices are positive numbers
-     - Verifies all categories are from the valid set of 5
-  2. src/pages/__tests__/CategoryPage.emptyState.test.js (5 tests)
-     - Edge case: slug "nonexistent" renders zero product images
-     - Edge case: heading is still capitalised even when no products match
-     - Edge case: slug "furniture" (valid English word, no such category) renders zero images
-     - Edge case: slug "unknown" renders zero images
-     - Data sanity: confirms products.js has no products in non-existent categories
-- No production files were modified.
+Notes: Pre-existing test files (Navbar.auth.test.js, CartPage.test.js, CategoryPage.test.js, CategoryPage.emptyState.test.js, ProductListingPage.test.js) were updated to wrap components with WishlistProvider since ProductCard and Navbar now consume useWishlist(). No production src/ files were modified. All 7 done criteria for feature #007 are covered: (1) heart toggle logged-in adds/removes item and isWishlisted returns correct value — WishlistContext.test.js + ProductCard.wishlist.test.js; (2) heart click logged-out opens AuthModal and does not call toggleWishlist — ProductCard.wishlist.test.js; (3) WishlistPage renders one row per item and shows empty state — WishlistPage.test.js; (4) Add to Cart on WishlistPage calls addToCart and item stays in list — WishlistPage.test.js; (5) Navbar wishlist link present when logged in, absent when logged out — Navbar.wishlist.test.js; (6) toggleWishlist writes to localStorage on every call — WishlistContext.test.js; (7) items initialised from pre-seeded localStorage on mount — WishlistContext.test.js.

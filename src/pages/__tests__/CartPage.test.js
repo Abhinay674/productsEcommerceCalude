@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider, useCart } from '../../context/CartContext';
 import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
 import CartPage from '../../pages/CartPage';
 import Navbar from '../../components/Navbar';
 
@@ -180,13 +181,15 @@ describe('Navbar — Cart link navigates to /cart', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            <Routes>
-              <Route path="/"     element={<div>Home</div>} />
-              <Route path="/cart" element={<CartPage />} />
-            </Routes>
-          </CartProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <Navbar />
+              <Routes>
+                <Route path="/"     element={<div>Home</div>} />
+                <Route path="/cart" element={<CartPage />} />
+              </Routes>
+            </CartProvider>
+          </WishlistProvider>
         </AuthProvider>
       </MemoryRouter>
     );
