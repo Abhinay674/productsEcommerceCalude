@@ -23,7 +23,7 @@ const Navbar = () => {
       <div style={styles.right}>
         {currentUser ? (
           <>
-            <span style={styles.username}>{currentUser.username}</span>
+            <Link to="/profile" style={styles.profileLink}>{currentUser.username}</Link>
             <button style={styles.authBtn} onClick={logout}>Logout</button>
           </>
         ) : (
@@ -86,10 +86,11 @@ const styles = {
     alignItems: 'center',
     gap: '8px',
   },
-  username: {
+  profileLink: {
     color: '#fff',
     fontSize: '14px',
     fontWeight: '600',
+    textDecoration: 'none',
   },
   authBtn: {
     background: 'none',

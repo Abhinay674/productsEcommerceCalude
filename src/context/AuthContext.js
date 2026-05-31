@@ -29,8 +29,19 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser(user);
   };
 
+  const updateProfile = (name, email) => {
+    const users = JSON.parse(localStorage.getItem('shopUsers') || '[]');
+    const updated = users.map(u =>
+      u.username === currentUser.username ? { ...u, name, email } : u
+    );
+    localStorage.setItem('shopUsers', JSON.stringify(updated));
+    const user = { ...currentUser, name, email };
+    localStorage.setItem('shopCurrentUser', JSON.stringify(user));
+    setCurrentUser(user);
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, register }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, register, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
