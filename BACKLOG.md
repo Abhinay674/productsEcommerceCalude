@@ -332,3 +332,38 @@ ADRs:
 - Half-star rendered via two overlapping spans with overflow: hidden at 50% width — achieves visual half-star using only ★ and inline styles, consistent with no-CSS-file convention
 - Star fill color #f5a623 (gold), empty color #ccc (gray) — sufficient contrast on both #fff and #1e1e1e card backgrounds in light and dark mode
 - Numeric label uses secondary text token (#555 light / #aaa dark) via useTheme() — matches secondary text convention used across all existing components
+
+---
+
+## #010 Back to Top Floating Button — status: todo
+
+Why: Users scrolling through long product listing pages have no quick way to return to the top without manually scrolling all the way back.
+What: Add a self-contained BackToTop component that appears as a fixed ↑ button after 300px of scroll and smoothly scrolls to top on click, rendered on every page via AppShell.
+
+Patterns to follow:
+
+- useEffect with cleanup for event listeners (see src/hooks/useCarousel.js — setInterval/clearInterval pattern)
+- Self-contained component with no props, rendered once in AppShell in src/App.js (see Navbar pattern)
+
+Interface contracts:
+
+- BackToTop(): JSX.Element — no props; owns scroll listener, visible state, and click handler internally
+- Scroll threshold: window.scrollY > 300 → visible: true; window.scrollY <= 300 → visible: false
+- Click handler: window.scrollTo({ top: 0, behavior: 'smooth' })
+
+Done criteria:
+[ ] ↑ button is present in the DOM after a scroll event sets window.scrollY to 301 (`expect(screen.getByRole('button', { name: /back to top/i })).toBeInTheDocument()`)
+[ ] ↑ button is absent from the DOM when window.scrollY is 0 on initial render (`expect(screen.queryByRole('button', { name: /back to top/i })).not.toBeInTheDocument()`)
+[ ] ↑ button disappears after window.scrollY returns to 0 following a prior scroll past 300 (`expect(screen.queryByRole('button', { name: /back to top/i })).not.toBeInTheDocument()`)
+[ ] Clicking the ↑ button calls window.scrollTo with exactly { top: 0, behavior: 'smooth' } (`expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })`)
+[ ] BackToTop is rendered inside AppShell so the button is reachable on every route without adding it to individual page components (`expect(screen.getByRole('button', { name: /back to top/i })).toBeInTheDocument()` when rendered via AppShell wrapper)
+
+Out of scope: scroll progress indicator, animated fade/slide transitions, configurable threshold, per-page opt-out, keyboard shortcut
+
+ADRs:
+
+- BackToTop owns its scroll listener in useEffect with cleanup — no separate hook file needed for a single-use listener; mirrors the useCarousel setInterval/clearInterval pattern directly inside the component
+- Rendered inside AppShell in App.js after Routes — single mount point covers every route without touching individual page files
+- Fixed colors #1a1a2e background / #fff text — brand color has sufficient contrast in both light and dark mode; useTheme() not needed
+- zIndex: 99 — sits below sticky Navbar (zIndex: 100) so Navbar always renders on top during scroll
+- aria-label="Back to top" — allows tests to locate the button by accessible role+name without relying on the ↑ character
