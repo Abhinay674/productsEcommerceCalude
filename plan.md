@@ -1,144 +1,123 @@
-﻿---
-# Plan — Feature #007 Wishlist with Heart Toggle
+﻿# Plan — Feature #008 Dark Mode Toggle
 
 ## New files to create
 
-- src/context/WishlistContext.js
-- src/pages/WishlistPage.js
+- `src/context/ThemeContext.js` — ThemeProvider + useTheme hook, localStorage-backed with key `shopTheme`
 
 ## Files to modify
 
-- src/components/ProductCard.js
-  - Wrap the outer card div in a position:relative container div
-  - Add an absolutely-positioned heart button overlay in the top-right corner
-  - Import and call useWishlist() to read isWishlisted and toggleWishlist
-  - Import and call useAuth() to read currentUser
-  - Manage local useState(false) showModal to control AuthModal visibility
-  - On heart button click: e.stopPropagation(); if !currentUser set showModal(true); else call toggleWishlist(product)
-  - Mount AuthModal inside the component; isOpen={showModal}; onClose and onSuccess both call setShowModal(false)
-  - Heart renders filled/red (#e94560) when isWishlisted(product.id) is true; outlined/grey (#aaa) otherwise
+### `src/App.js`
+- Import `ThemeProvider` from `./context/ThemeContext`
+- Wrap everything inside `<ThemeProvider>` as the outermost provider (outside `<AuthProvider>`)
+- Move the root div into an inner component (e.g. `AppShell`) so it can call `useTheme()` and apply the theme-reactive page background: `#f7f7f7` (light) → `#121212` (dark)
+- Replace hardcoded `background: '#f7f7f7'` on the root div with the dynamic token
 
-- src/components/Navbar.js
-  - Import useWishlist from src/context/WishlistContext
-  - Destructure wishlistCount from useWishlist()
-  - When currentUser is truthy: render a Link to="/wishlist" with text "Wishlist" and a badge showing wishlistCount (badge only rendered when wishlistCount > 0, matching the existing cartCount pattern)
-  - When currentUser is null: do not render the wishlist link
+### `src/components/Navbar.js`
+- Import `useTheme`
+- Add a toggle button in the `right` section (always rendered regardless of `currentUser` value)
+- Button displays `🌙` when `isDark` is false; `☀️` when `isDark` is true; calls `toggleTheme` on click
+- No background color change needed — `#1a1a2e` is a fixed brand color per ADR
 
-- src/App.js
-  - Import WishlistProvider from ./context/WishlistContext
-  - Place WishlistProvider immediately inside AuthProvider, wrapping CartProvider (and all children)
-  - Import WishlistPage from ./pages/WishlistPage
-  - Add <Route path="/wishlist" element={<WishlistPage />} /> inside Routes
+### `src/components/ProductCard.js`
+- Import `useTheme`; move `const styles = {}` inside the component body, computed from `isDark`
+- `card.background`: `#fff` (light) → `#1e1e1e` (dark)
+- `name` color: `#222` (light) → `#e0e0e0` (dark)
+- `heartBtn` background: `rgba(255,255,255,0.85)` (light) → `rgba(30,30,30,0.85)` (dark)
+
+### `src/pages/ProductListingPage.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `searchInput` border: `1px solid #ddd` (light) → `1px solid #444` (dark)
+- `searchInput` background: `#fff` (light) → `#2a2a2a` (dark)
+- `searchInput` color (text): add explicit `#222` (light) → `#e0e0e0` (dark)
+- `empty` color: `#555` (light) → `#aaa` (dark)
+
+### `src/pages/ProductDetailPage.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `backBtn` color: `#444` → `#555` (light) → `#aaa` (dark)
+- `backBtn` border: `1px solid #ccc` (light) → `1px solid #444` (dark)
+- `name` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `description` color: `#555` (light) → `#aaa` (dark)
+- `stepBtn` background: `#f5f5f5` (light) → `#2a2a2a` (dark); border: `1px solid #ccc` (light) → `1px solid #444` (dark)
+- `addBtn` background: `#1a1a2e` is brand color — leave unchanged
+
+### `src/pages/CartPage.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `empty` color: `#555` (light) → `#aaa` (dark)
+- `footer` background: `#fff` (light) → `#1e1e1e` (dark)
+- `total` color: `#444` → secondary text token: `#555` (light) → `#aaa` (dark)
+- `totalAmount` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+
+### `src/pages/CategoryPage.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+
+### `src/pages/WishlistPage.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `empty` color: `#555` (light) → `#aaa` (dark)
+- `row` background: `#fff` (light) → `#1e1e1e` (dark)
+- `name` color: `#222` (light) → `#e0e0e0` (dark)
+- `addBtn` background: `#1a1a2e` is brand color — leave unchanged
+
+### `src/components/CartItem.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `row` background: `#fff` (light) → `#1e1e1e` (dark)
+- `name` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `price` color: `#555` (light) → `#aaa` (dark)
+- `qty` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `total` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+
+### `src/components/HamburgerMenu.js`
+- No changes required — drawer uses `#16213e` (brand-adjacent navy) with `#fff` text; works on both themes as the drawer floats over the navbar area
+
+### `src/components/AuthModal.js`
+- Import `useTheme`; move `const styles = {}` inside the component body
+- `modal` background: `#fff` (light) → `#1e1e1e` (dark)
+- `closeBtn` color: `#555` (light) → `#aaa` (dark)
+- `tabs` borderBottom: `2px solid #eee` (light) → `2px solid #444` (dark)
+- `activeTab` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
+- `input` border: `1px solid #ddd` (light) → `1px solid #444` (dark)
+- `input` background: add explicit `#fff` (light) → `#2a2a2a` (dark)
+- `input` color: add explicit `#222` (light) → `#e0e0e0` (dark)
+
+### `src/components/CarouselSlide.js`
+- No changes required — overlay uses a dark gradient on top of an image; `#fff` name and `#f0c040` price sit on that overlay and are unaffected by page theme
 
 ## Hook contracts (exact signatures)
 
 ```js
-// Exported from src/context/WishlistContext.js
-export const useWishlist = () => useContext(WishlistContext);
-// Returns:
-// {
-//   items: Product[],
-//   toggleWishlist: (product: Product) => void,
-//   isWishlisted: (id: number) => boolean,
-//   wishlistCount: number,
-// }
+useTheme(): { isDark: boolean, toggleTheme(): void }
 ```
-
-- items — full Product objects for the logged-in user; reset to [] when currentUser is null
-- toggleWishlist(product) — if product.id already in items, removes it; otherwise appends it; writes updated array to localStorage key shopWishlist_${currentUser.username}; no-op when currentUser is null
-- isWishlisted(id) — returns true when items contains an object whose .id === id; false otherwise
-- wishlistCount — items.length (number)
-
-## Component props (exact signatures)
-
-### ProductCard
-```
-ProductCard({
-  product: {
-    id: number,          // required
-    name: string,        // required
-    price: number,       // required
-    description: string, // required
-    image: string,       // required
-    category: string,    // required
-    featured?: boolean,  // optional
-  }
-})
-```
-Added behaviour (this feature):
-- Outer wrapper div: position: 'relative'
-- Heart button: position: 'absolute', top: '8px', right: '8px', zIndex: 1
-- Heart button click: e.stopPropagation(); auth gate then toggleWishlist
-- AuthModal rendered inside component; isOpen={showModal}; initialTab="login"
-
-### WishlistPage
-No external props — page component, reads context directly.
-
-Rendered structure:
-- Heading: <h1>My Wishlist</h1>
-- Empty state (items.length === 0): <p>Your wishlist is empty.</p>
-- Item rows (items.length > 0): one row per Product containing:
-  - <img src={product.image} alt={product.name} />
-  - <span>{product.name}</span>
-  - <span>&#x20B9;{product.price.toLocaleString('en-IN')}</span>
-  - <button onClick={() => addToCart(product, 1)}>Add to Cart</button>
-  - <button onClick={() => toggleWishlist(product)}> (remove/heart icon) </button>
-
-### Navbar (modified, no new props)
-No prop changes. Reads wishlistCount from useWishlist(). Conditionally renders wishlist Link.
 
 ## Context shape (exact)
 
-```js
-// WishlistContext provider value
-{
-  items: Product[],               // [] when not logged in or wishlist is empty
-  toggleWishlist: (product: Product) => void,
-  isWishlisted: (id: number) => boolean,
-  wishlistCount: number,          // items.length
-}
-```
+ThemeContext provides: `{ isDark: boolean, toggleTheme(): void }`
 
-WishlistProvider internal implementation notes:
-- const [items, setItems] = useState([])
-- useEffect(() => { if (!currentUser) { setItems([]); return; } const key = 'shopWishlist_' + currentUser.username; const stored = localStorage.getItem(key); setItems(stored ? JSON.parse(stored) : []); }, [currentUser])
-- toggleWishlist writes to localStorage on every call
-- isWishlisted defined inline: (id) => items.some(p => p.id === id)
-- wishlistCount derived: items.length
+## Color tokens (exact)
 
-## localStorage key format
-
-Key pattern:  shopWishlist_${currentUser.username}
-Value format: JSON-stringified Product[] (full objects)
-
-Example:
-  key:   "shopWishlist_alice"
-  value: '[{"id":3,"name":"Widget","price":499,"description":"A widget","image":"/img.jpg","category":"gadgets"}]'
-
-Rules:
-- One key per username — prevents cross-user data leakage
-- Full Product objects stored, not just IDs — avoids a lookup on load; products.js is static
-- Written with: localStorage.setItem(key, JSON.stringify(updatedItems)) on every toggleWishlist call
-- Read with: JSON.parse(localStorage.getItem(key) || '[]') on WishlistProvider mount and on currentUser change
+| Element         | Light    | Dark     |
+|-----------------|----------|----------|
+| Page background | #f7f7f7  | #121212  |
+| Card background | #fff     | #1e1e1e  |
+| Primary text    | #222     | #e0e0e0  |
+| Secondary text  | #555     | #aaa     |
+| Input border    | #ddd     | #444     |
+| Input bg        | #fff     | #2a2a2a  |
+| Navbar bg       | #1a1a2e  | #1a1a2e  (fixed, never changes) |
+| Accent          | #e94560  | #e94560  (unchanged) |
 
 ## Build order
 
-1. src/context/WishlistContext.js — create first; no dependency on other new files
-2. src/pages/WishlistPage.js — create; depends on WishlistContext (step 1) and CartContext (already exists)
-3. src/App.js — modify; add WishlistProvider wrap and /wishlist route
-4. src/components/ProductCard.js — modify; add heart overlay using WishlistContext and AuthModal
-5. src/components/Navbar.js — modify last; add wishlist link using WishlistContext
-
-## Route plan
-
-New route:
-  Path:       /wishlist
-  Component:  WishlistPage
-  Auth gate:  Soft — page renders for all users; empty state shown when not logged in; heart toggle requires login
-
-Existing routes (unchanged):
-  /                  -> ProductListingPage
-  /product/:id       -> ProductDetailPage
-  /cart              -> CartPage
-  /category/:slug    -> CategoryPage
----
+1. **`src/context/ThemeContext.js`** (new) — create ThemeProvider and useTheme; reads `localStorage.getItem('shopTheme') === 'dark'` for initial state; writes on every toggle
+2. **`src/App.js`** — wrap with `<ThemeProvider>` as outermost provider; add inner `AppShell` component to call `useTheme()` and apply dynamic page background token
+3. **`src/components/Navbar.js`** — add 🌙/☀️ toggle button calling `toggleTheme()`; always rendered regardless of auth state
+4. **`src/components/ProductCard.js`** — apply card background and text tokens
+5. **`src/pages/ProductListingPage.js`** — apply heading, input, and empty-state tokens
+6. **`src/pages/ProductDetailPage.js`** — apply text, border, and step-button tokens
+7. **`src/pages/CartPage.js`** — apply heading, empty, footer card, and total tokens
+8. **`src/pages/CategoryPage.js`** — apply heading token
+9. **`src/pages/WishlistPage.js`** — apply heading, row card, and name tokens
+10. **`src/components/CartItem.js`** — apply row card and text tokens
+11. **`src/components/AuthModal.js`** — apply modal card, input, and text tokens
