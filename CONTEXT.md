@@ -1,5 +1,32 @@
 # CONTEXT.md
 
+## Star Ratings Feature
+
+### StarRating component
+A purely presentational component at `src/components/StarRating.js`.
+- Props: `rating: number` (1.0–5.0)
+- Renders 5 star positions at half-star precision (rounds to nearest 0.5)
+- Star characters: `★` gold (`#f5a623`) for full, half-star for 0.5, `☆` gray for empty
+- Shows numeric value after stars: e.g., `★★★★½ 4.5`
+- Dark-mode aware via `useTheme()` — numeric label: `#555` (light) / `#aaa` (dark)
+- No context, no data access — receives `rating` as prop
+
+### rating field
+`product.rating: number` — a 1.0–5.0 float added directly to every product object in `src/data/products.js`. Rounded to one decimal place. No separate reviews file.
+
+### Star display positions
+| Position value | Character |
+|---|---|
+| `rating >= i+1` | `★` (full, gold) |
+| `rating >= i+0.5` | half-star overlay |
+| otherwise | `☆` (empty, gray) |
+
+### Placement
+- **ProductCard**: between `name` and `price` in the card body
+- **ProductDetailPage**: below product name, above price in the info section
+
+---
+
 ## Domain Terms
 
 ### category
