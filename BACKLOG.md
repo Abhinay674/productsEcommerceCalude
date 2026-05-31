@@ -150,3 +150,41 @@ ADRs:
 - `/category/:slug` URL route chosen over in-place filter so the URL is bookmarkable and browser back button works correctly
 - `category` field added directly to each product object in `products.js` — avoids a separate lookup map; filtering stays a single `Array.filter()` call
 - Carousel intentionally excluded from `CategoryPage` — avoids needing `featured` flags on 42 new products and keeps category views focused
+
+---
+
+## #005 Auth Gate & User Accounts — status: todo
+
+Why: Users can place orders without any identity, making it impossible to associate orders with accounts.
+What: Add localStorage-backed login/register with a modal auth gate on "Proceed to Payment" and persistent auth state in the Navbar.
+
+Patterns to follow:
+
+- React Context + `useState` for shared state, consumed via a custom hook (see `src/context/CartContext.js` + `useCart`)
+- Inline style objects defined as `const styles = {}` at the bottom of each component file (see `CartItem.js`, `Navbar.js`)
+
+Interface contracts:
+
+- `useAuth(): { currentUser: { name: string, username: string } | null, login(username: string, password: string): boolean, logout(): void, register(name: string, username: string, password: string): void }`
+- `AuthModal({ isOpen: boolean, initialTab: 'login' | 'register', onClose(): void, onSuccess(): void }): JSX.Element`
+- `shopUsers: Array<{ name: string, username: string, password: string }>` — localStorage key
+- `shopCurrentUser: { name: string, username: string }` — localStorage key, absent when logged out
+
+Done criteria:
+- [ ] Clicking "Proceed to Payment" when `currentUser` is null opens `AuthModal` and does NOT call `window.alert` (`expect(window.alert).not.toHaveBeenCalled()`)
+- [ ] Submitting the Login form with a matching username + password sets `shopCurrentUser` in localStorage and calls `onSuccess` (`expect(localStorage.getItem('shopCurrentUser')).not.toBeNull()`)
+- [ ] Submitting the Register form with name, username, and password appends to `shopUsers`, sets `shopCurrentUser`, and calls `onSuccess` (`expect(JSON.parse(localStorage.getItem('shopUsers'))).toHaveLength(1)`)
+- [ ] Submitting the Login form with non-matching credentials does NOT call `onSuccess` and triggers a toast containing the text "Invalid credentials" (`expect(onSuccess).not.toHaveBeenCalled()`)
+- [ ] When `currentUser` is set, Navbar renders the username string and a Logout button; Login and Register buttons are not present (`expect(screen.getByText(username)).toBeInTheDocument()`)
+- [ ] Clicking Logout calls `logout()`, removes `shopCurrentUser` from localStorage, and Navbar shows Login and Register buttons (`expect(localStorage.getItem('shopCurrentUser')).toBeNull()`)
+- [ ] Clicking "Proceed to Payment" when `currentUser` is set calls `window.alert('Order placed successfully!')` without opening `AuthModal` (`expect(window.alert).toHaveBeenCalledWith('Order placed successfully!')`)
+
+Out of scope: password hashing, session expiry, token-based auth, backend API, forgot-password flow, email validation, duplicate username prevention
+
+ADRs:
+
+- `AuthContext` wraps `CartProvider` in `App.js` — auth state must be available to both Navbar and CartPage; sitting above both in the tree is the only clean option
+- `AuthModal` accepts `initialTab` prop — Navbar Login/Register buttons each pre-set the tab without duplicating modal component logic
+- `onSuccess` callback on `AuthModal` triggers payment in `CartPage` — decouples the modal from payment logic; modal only signals success, caller decides what to do
+- Passwords stored plaintext in `shopUsers` localStorage — no backend exists; this is a frontend-only demo with no security requirement
+- `react-toastify` added as a runtime dependency; `<ToastContainer />` placed once in `App.js` — single source of toast rendering, consistent with library convention
