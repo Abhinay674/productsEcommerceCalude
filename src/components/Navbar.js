@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useTheme } from '../context/ThemeContext';
 import HamburgerMenu from './HamburgerMenu';
 import AuthModal from './AuthModal';
 
@@ -10,6 +11,7 @@ const Navbar = () => {
   const { cartCount } = useCart();
   const { currentUser, logout } = useAuth();
   const { wishlistCount } = useWishlist();
+  const { isDark, toggleTheme } = useTheme();
   const [modalTab, setModalTab] = useState(null);
 
   return (
@@ -44,6 +46,13 @@ const Navbar = () => {
             <span style={styles.badge}>{cartCount}</span>
           )}
         </Link>
+        <button
+          style={styles.themeBtn}
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+        >
+          {isDark ? '☀️' : '🌙'}
+        </button>
       </div>
       <AuthModal
         isOpen={modalTab !== null}
@@ -91,6 +100,16 @@ const styles = {
     fontSize: '13px',
     cursor: 'pointer',
     textDecoration: 'none',
+  },
+  themeBtn: {
+    background: 'none',
+    border: '1px solid rgba(255,255,255,0.4)',
+    borderRadius: '6px',
+    color: '#fff',
+    padding: '5px 10px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    lineHeight: 1,
   },
   brand: {
     color: '#fff',

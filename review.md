@@ -1,43 +1,54 @@
 GATE 5 VERDICT: APPROVE
-
-Summary: Feature #007 delivers a fully functional, localStorage-backed wishlist behind an auth gate. WishlistContext exposes the correct { items, toggleWishlist, isWishlisted, wishlistCount } interface with a per-user shopWishlist_${username} storage key. ProductCard overlays an absolutely-positioned heart button that calls toggleWishlist when logged in and opens AuthModal when logged out. WishlistPage renders one row per item with Add to Cart and remove buttons, and shows an empty state when items is empty. Navbar conditionally renders a /wishlist link with a live badge only when currentUser is set. All 7 BACKLOG done criteria are covered by 48 passing tests (135/135 total green) using real provider trees, hand-rolled fakes, and jest.spyOn — no wholesale jest.mock() module replacement. The criterion 4 fix correctly wires jest.spyOn(CartModule, 'useCart') with mockReturnValue and mockRestore cleanup, giving a valid and directly observable assertion that addToCart(product, 1) was called. Layering, code quality, and interface contracts are all clean with no console.log, no fetch() in components or pages, no business logic in JSX, and no hardcoded localStorage keys.
-
----
-
-Done criteria coverage for feature #007:
-
-Criterion 1 — heart toggle (logged in) adds/removes; isWishlisted returns true/false
-  COVERED — WishlistContext.test.js (criterion 1 describe block, 4 tests) + ProductCard.wishlist.test.js (criterion 1 describe block, 4 tests)
-
-Criterion 2 — heart click (logged out) opens AuthModal; toggleWishlist not called
-  COVERED — ProductCard.wishlist.test.js (criterion 2 describe block, 3 tests)
-
-Criterion 3 — WishlistPage renders one row per item; empty state when items is empty
-  COVERED — WishlistPage.test.js (criterion 3 describe block, 9 tests)
-
-Criterion 4 — "Add to Cart" calls addToCart(product, 1); item remains in wishlist
-  COVERED — WishlistPage.test.js (criterion 4 describe block, 3 tests); jest.spyOn(CartModule, 'useCart').mockReturnValue({addToCart: mockAddToCart, ...}) correctly intercepts the useCart() call inside WishlistPage and verifies expect(mockAddToCart).toHaveBeenCalledWith(productA, 1). useCartSpy.mockRestore() cleans up after the test. Item-remains assertion is confirmed in the same test and in two additional tests with real providers.
-
-Criterion 5 — Navbar shows wishlist link + count when logged in; absent when logged out
-  COVERED — Navbar.wishlist.test.js (criterion 5 describe block, 7 tests)
-
-Criterion 6 — toggleWishlist writes updated Product[] to localStorage on every call
-  COVERED — WishlistContext.test.js (criterion 6 describe block, 4 tests)
-
-Criterion 7 — items initialised from pre-seeded localStorage on mount
-  COVERED — WishlistContext.test.js (criterion 7 describe block, 4 tests)
-
----
-
-Layering: PASS — no fetch() or data imports in components, pages, or context; no business logic in JSX; WishlistContext only reads from AuthContext; pages import only hooks and components.
-
-JavaScript style: PASS — all hook return values match BACKLOG #007 interface contracts exactly; localStorage key uses the dynamic storageKey(username) helper producing shopWishlist_${username} (not hardcoded).
-
-Tests: PASS — no wholesale jest.mock() in any of the 4 new test files; fakes are hand-rolled or use jest.spyOn; tests check user-visible behaviour (button clicks, link presence, text content, localStorage reads). Criterion 4 addToCart assertion is now valid and properly restored.
-
-Code quality: PASS — no console.log in any production file; localStorage key is correctly namespaced per username; no business logic in JSX.
+Summary: Feature #008 (Dark Mode Toggle) is fully and correctly implemented. ThemeContext.js is the sole file reading and writing localStorage for the shopTheme key; no component or page bypasses it. ThemeProvider is correctly placed as the outermost provider in App.js (wrapping AuthProvider). useTheme() returns exactly { isDark: boolean, toggleTheme(): void } matching the BACKLOG contract. The toggle button in Navbar carries aria-label="Toggle theme" and renders moon/sun emojis correctly. Navbar background (#1a1a2e) and accent color (#e94560) are hardcoded and unaffected by theme. All five color tokens are applied correctly across all 9 consumer files: page background #f7f7f7/#121212, card background #fff/#1e1e1e, primary text #222/#e0e0e0, secondary text #555/#aaa, and input border #ddd/#444. The three new test files contain no jest.mock() module replacements, test only user-visible behaviour, and cover all 5 done criteria. No console.log appears in any production file. All 153 tests pass.
 
 ---
 
 Coverage check note (Step 10):
-coverage-check.js flagged criteria from prior completed features (#001–#006) that are not mentioned in this feature's review.md. These are existing criteria already covered by those features' test suites and are not in scope for feature #007. No action required — pipeline continues.
+coverage-check.js flagged 2 criteria from prior completed features (#001 cartCount, #005 invalid credentials toast) that are not mentioned in this feature's review.md. These are fully covered by those features' own test suites and are out of scope for feature #008. No action required — pipeline continues.
+
+LAYERING:
+[PASS] ThemeContext.js is the only file reading/writing localStorage for shopTheme — confirmed by grep; only ThemeContext.js lines 7 and 13 touch shopTheme.
+[PASS] No component or page accesses localStorage for theme directly — grep of all src/*.js files shows zero localStorage references to theme outside ThemeContext.js and test files.
+[PASS] Pages and components only call useTheme() — every consumer imports and destructures useTheme(); no business logic around the result.
+[PASS] ThemeProvider is outermost provider in App.js — App.js line 34: <ThemeProvider> wraps <AuthProvider>, <WishlistProvider>, <CartProvider>.
+
+JAVASCRIPT STYLE:
+[PASS] useTheme() returns { isDark: boolean, toggleTheme(): void } — matches BACKLOG #008 interface contract exactly.
+[PASS] Toggle button has aria-label="Toggle theme" — Navbar.js line 51.
+[PASS] Navbar background is #1a1a2e in both modes — styles.nav.background is a hardcoded string on line 74, not conditional on isDark.
+[PASS] Accent color #e94560 is unchanged in both modes — all accent usages (badge, price, payBtn, submitBtn, heartBtn color, stepBtn, CartPage payBtn, etc.) are hardcoded strings, not conditional.
+
+COLOR TOKENS:
+[PASS] Page background: #f7f7f7 (light) / #121212 (dark) — App.js AppShell line 19.
+[PASS] Card background: #fff (light) / #1e1e1e (dark) — ProductCard.js styles.card, CartItem.js styles.row, CartPage.js styles.footer, WishlistPage.js styles.row, AuthModal.js styles.modal.
+[PASS] Primary text: #222 (light) / #e0e0e0 (dark) — ProductCard name, ProductListingPage heading/searchInput/input color, ProductDetailPage name, CartPage heading, WishlistPage heading/name, CartItem name/qty/total, AuthModal activeTab/input color.
+[PASS] Secondary text: #555 (light) / #aaa (dark) — ProductListingPage empty, CartPage empty, ProductDetailPage description/backBtn color, AuthModal closeBtn color.
+[PASS] Input border: #ddd (light) / #444 (dark) — ProductListingPage searchInput border, AuthModal input border, ProductDetailPage stepBtn/backBtn border.
+
+TESTS:
+[PASS] All 5 done criteria have passing tests — see coverage section below.
+[PASS] No wholesale jest.mock() module replacement in new test files — ThemeContext.test.js, Navbar.theme.test.js, ProductCard.theme.test.js contain no jest.mock() calls.
+[PASS] Tests check user-visible behaviour — emoji text content checked via toHaveTextContent, button presence via toBeInTheDocument, background styles traversed via DOM node.style.
+[PASS] No console.log in any production file — grep returned zero hits in production src files (index.js comment line is not a call).
+
+DONE CRITERIA COVERAGE:
+Criterion 1 — Clicking moon (isDark=false) toggles to sun; ProductCard bg becomes #1e1e1e:
+  COVERED by Navbar.theme.test.js: "criterion 1: clicking the moon button switches display to sun (☀️)"
+  COVERED by ProductCard.theme.test.js: "criterion 1: card background is #1e1e1e in dark mode"
+
+Criterion 2 — Clicking sun (isDark=true) toggles to moon; ProductCard bg becomes #fff:
+  COVERED by Navbar.theme.test.js: "criterion 2: clicking the sun button switches display to moon (🌙)"
+  COVERED by ProductCard.theme.test.js: "criterion 2: card background is #fff in light mode"
+
+Criterion 3 — shopTheme='dark' pre-seeded in localStorage before mount, ThemeProvider initialises isDark as true:
+  COVERED by ThemeContext.test.js: "criterion 3: initialises isDark as true when shopTheme is pre-seeded as 'dark'"
+
+Criterion 4 — toggleTheme writes 'light' when switching dark→light, 'dark' when switching light→dark:
+  COVERED by ThemeContext.test.js: "criterion 4: toggleTheme writes 'dark' to localStorage when switching light → dark"
+  COVERED by ThemeContext.test.js: "criterion 4: toggleTheme writes 'light' to localStorage when switching dark → light"
+
+Criterion 5 — Toggle button present and functional regardless of currentUser (logged in and logged out):
+  COVERED by Navbar.theme.test.js: "criterion 5: toggle button is present when user is logged out"
+  COVERED by Navbar.theme.test.js: "criterion 5: toggle button is present when user is logged in"
+  COVERED by Navbar.theme.test.js: "criterion 5: toggle button is functional (calls toggleTheme) when logged out"
+  COVERED by Navbar.theme.test.js: "criterion 5: toggle button is functional (calls toggleTheme) when logged in"
