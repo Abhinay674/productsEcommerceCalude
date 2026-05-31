@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const AuthModal = ({ isOpen, initialTab, onClose, onSuccess }) => {
   const { login, register } = useAuth();
+  const { isDark } = useTheme();
   const [tab, setTab] = useState(initialTab || 'login');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
@@ -27,6 +29,78 @@ const AuthModal = ({ isOpen, initialTab, onClose, onSuccess }) => {
     register(name, username, password);
     onSuccess();
     onClose();
+  };
+
+  const styles = {
+    overlay: {
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+    },
+    modal: {
+      background: isDark ? '#1e1e1e' : '#fff',
+      borderRadius: '12px',
+      padding: '32px',
+      width: '360px',
+      position: 'relative',
+    },
+    closeBtn: {
+      position: 'absolute',
+      top: '12px',
+      right: '16px',
+      background: 'none',
+      border: 'none',
+      fontSize: '24px',
+      cursor: 'pointer',
+      color: isDark ? '#aaa' : '#555',
+    },
+    tabs: {
+      display: 'flex',
+      marginBottom: '24px',
+      borderBottom: isDark ? '2px solid #444' : '2px solid #eee',
+    },
+    tab: {
+      flex: 1,
+      background: 'none',
+      border: 'none',
+      padding: '10px',
+      fontSize: '15px',
+      cursor: 'pointer',
+      color: '#888',
+      fontWeight: '600',
+    },
+    activeTab: {
+      color: isDark ? '#e0e0e0' : '#222',
+      borderBottom: '2px solid #e94560',
+      marginBottom: '-2px',
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    },
+    input: {
+      padding: '10px 14px',
+      border: isDark ? '1px solid #444' : '1px solid #ddd',
+      borderRadius: '8px',
+      fontSize: '15px',
+      background: isDark ? '#2a2a2a' : '#fff',
+      color: isDark ? '#e0e0e0' : '#222',
+    },
+    submitBtn: {
+      background: '#e94560',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '8px',
+      padding: '12px',
+      fontSize: '15px',
+      fontWeight: '700',
+      cursor: 'pointer',
+    },
   };
 
   return (
@@ -96,76 +170,6 @@ const AuthModal = ({ isOpen, initialTab, onClose, onSuccess }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  overlay: {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-  },
-  modal: {
-    background: '#fff',
-    borderRadius: '12px',
-    padding: '32px',
-    width: '360px',
-    position: 'relative',
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: '12px',
-    right: '16px',
-    background: 'none',
-    border: 'none',
-    fontSize: '24px',
-    cursor: 'pointer',
-    color: '#555',
-  },
-  tabs: {
-    display: 'flex',
-    marginBottom: '24px',
-    borderBottom: '2px solid #eee',
-  },
-  tab: {
-    flex: 1,
-    background: 'none',
-    border: 'none',
-    padding: '10px',
-    fontSize: '15px',
-    cursor: 'pointer',
-    color: '#888',
-    fontWeight: '600',
-  },
-  activeTab: {
-    color: '#1a1a2e',
-    borderBottom: '2px solid #e94560',
-    marginBottom: '-2px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-  input: {
-    padding: '10px 14px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    fontSize: '15px',
-  },
-  submitBtn: {
-    background: '#e94560',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    padding: '12px',
-    fontSize: '15px',
-    fontWeight: '700',
-    cursor: 'pointer',
-  },
 };
 
 export default AuthModal;
