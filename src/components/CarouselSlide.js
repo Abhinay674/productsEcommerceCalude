@@ -9,7 +9,7 @@ const CarouselSlide = ({ product }) => {
       <img src={product.image} alt={product.name} style={styles.image} />
       <div style={styles.overlay}>
         <p style={styles.name}>{product.name}</p>
-        <p style={styles.price}>${product.price.toFixed(2)}</p>
+        <p style={styles.price}>₹{product.price.toFixed(2)}</p>
       </div>
     </div>
   );

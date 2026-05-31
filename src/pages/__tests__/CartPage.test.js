@@ -2,8 +2,18 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider, useCart } from '../../context/CartContext';
+import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
 import CartPage from '../../pages/CartPage';
 import Navbar from '../../components/Navbar';
+
+jest.mock('react-toastify', () => ({
+  toast: { error: jest.fn() },
+}));
+
+beforeEach(() => {
+  localStorage.clear();
+});
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -30,10 +40,12 @@ const CartSetup = ({ entries }) => {
 const renderWithCart = (entries = []) =>
   render(
     <MemoryRouter initialEntries={['/cart']}>
-      <CartProvider>
-        {entries.length > 0 && <CartSetup entries={entries} />}
-        <CartPage />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          {entries.length > 0 && <CartSetup entries={entries} />}
+          <CartPage />
+        </CartProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 
@@ -59,9 +71,9 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the unit price for each cart entry', () => {
-    // Use quantity 2 so unit price ($10.00) ≠ line total ($20.00), avoiding ambiguity
+    // Use quantity 2 so unit price (₹10.00) ≠ line total (₹20.00), avoiding ambiguity
     renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
-    expect(screen.getByText('$10.00')).toBeInTheDocument();
+    expect(screen.getByText('₹10.00')).toBeInTheDocument();
   });
 
   test('renders the quantity for each cart entry', () => {
@@ -70,11 +82,11 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the line total (price × quantity) for each entry', () => {
-    // Use quantity 2: line total $20.00 is distinct from unit price $10.00 and grand total $20.00
+    // Use quantity 2: line total ₹20.00 is distinct from unit price ₹10.00 and grand total ₹20.00
     // Use getAllByText since line total equals grand total when only one item is present
     renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
     // 10.00 * 2 = 20.00 — appears as both line total and grand total
-    expect(screen.getAllByText('$20.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('₹20.00').length).toBeGreaterThanOrEqual(1);
   });
 
   test('renders one row per distinct cart entry', () => {
@@ -121,7 +133,7 @@ describe('CartPage — increment', () => {
     // before: 2 × 10.00 = 20.00
     fireEvent.click(screen.getByRole('button', { name: /\+/ }));
     // after:  3 × 10.00 = 30.00 (appears as both line total and grand total)
-    expect(screen.getAllByText('$30.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('₹30.00').length).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -136,12 +148,12 @@ describe('CartPage — grand total', () => {
       { product: mockProducts[1], quantity: 3 },  //  5.50 * 3 = 16.50
     ]);
     // grand total = 36.50
-    expect(screen.getByText('$36.50')).toBeInTheDocument();
+    expect(screen.getByText('₹36.50')).toBeInTheDocument();
   });
 
-  test('grand total is $0.00 when cart is empty', () => {
+  test('grand total is ₹0.00 when cart is empty', () => {
     renderWithCart([]);
-    expect(screen.getByText('$0.00')).toBeInTheDocument();
+    expect(screen.getByText('₹0.00')).toBeInTheDocument();
   });
 });
 
@@ -150,7 +162,8 @@ describe('CartPage — grand total', () => {
 // ---------------------------------------------------------------------------
 
 describe('CartPage — Proceed to Payment', () => {
-  test('clicking "Proceed to Payment" shows an alert with success message', () => {
+  test('clicking "Proceed to Payment" shows an alert when logged in', () => {
+    localStorage.setItem('shopCurrentUser', JSON.stringify({ name: 'Alice', username: 'alice' }));
     const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
     renderWithCart([{ product: mockProducts[0], quantity: 1 }]);
     fireEvent.click(screen.getByRole('button', { name: /proceed to payment/i }));
@@ -167,13 +180,17 @@ describe('Navbar — Cart link navigates to /cart', () => {
   test('clicking the Cart link in the Navbar renders the CartPage at /cart', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <CartProvider>
-          <Navbar />
-          <Routes>
-            <Route path="/"     element={<div>Home</div>} />
-            <Route path="/cart" element={<CartPage />} />
-          </Routes>
-        </CartProvider>
+        <AuthProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <Navbar />
+              <Routes>
+                <Route path="/"     element={<div>Home</div>} />
+                <Route path="/cart" element={<CartPage />} />
+              </Routes>
+            </CartProvider>
+          </WishlistProvider>
+        </AuthProvider>
       </MemoryRouter>
     );
 

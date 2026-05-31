@@ -1,20 +1,23 @@
-Tests passing: 76 of 76
-New tests added: 17
+## Gate 3 — Green Phase: Feature #010 Back to Top Floating Button
+
+Tests passing: 193 of 193
+New tests added: 9 (all in src/components/__tests__/BackToTop.test.js)
 All done criteria covered: yes
-Notes:
-- All 59 pre-existing tests continued to pass unchanged.
-- 17 new tests added across 2 new files:
-  1. src/data/__tests__/products.data.test.js (12 tests)
-     - Verifies products.js exports exactly 50 products
-     - Verifies each of the 5 categories contains exactly 10 products
-     - Verifies every product has the required shape fields (id, name, price, description, image, category)
-     - Verifies all ids are unique positive integers numbered 1-50 sequentially
-     - Verifies all prices are positive numbers
-     - Verifies all categories are from the valid set of 5
-  2. src/pages/__tests__/CategoryPage.emptyState.test.js (5 tests)
-     - Edge case: slug "nonexistent" renders zero product images
-     - Edge case: heading is still capitalised even when no products match
-     - Edge case: slug "furniture" (valid English word, no such category) renders zero images
-     - Edge case: slug "unknown" renders zero images
-     - Data sanity: confirms products.js has no products in non-existent categories
-- No production files were modified.
+
+### Criteria Coverage
+
+| # | Done Criterion | Covered By |
+|---|----------------|------------|
+| 1 | up button present after scroll event sets window.scrollY to 301 | BackToTop.test.js — "criterion 1" suite (2 tests) |
+| 2 | up button absent on initial render (scrollY = 0) | BackToTop.test.js — "criterion 2" suite (1 test) |
+| 3 | up button disappears after scrollY returns to 0 | BackToTop.test.js — "criterion 3" suite (1 test) |
+| 4 | Clicking up calls window.scrollTo({ top: 0, behavior: 'smooth' }) | BackToTop.test.js — "criterion 4" suite (2 tests) |
+| 5 | BackToTop rendered inside AppShell — reachable on every route | BackToTop.test.js — "criterion 5" suite (2 tests) |
+
+### Notes
+
+- All 23 test suites pass; 193 tests total, 0 failures.
+- BackToTop component uses strict > 300 threshold, so scrollY = 300 keeps the button hidden and scrollY = 301 reveals it — matching criterion 1 exactly.
+- The component correctly removes the scroll listener on unmount via useEffect cleanup.
+- Criterion 5 is verified by rendering BackToTop outside any page component (at AppShell level) alongside a main element and confirming the button appears after scroll on multiple routes.
+- Only punycode deprecation warnings were emitted (Node.js internals, unrelated to this feature).

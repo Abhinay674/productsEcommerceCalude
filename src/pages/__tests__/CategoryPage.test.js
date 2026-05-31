@@ -1,6 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
+import { CartProvider } from '../../context/CartContext';
 import CategoryPage from '../CategoryPage';
 
 // ---------------------------------------------------------------------------
@@ -44,9 +47,15 @@ const allMockProducts = [
 const renderCategoryPage = (slug, products = allMockProducts) =>
   render(
     <MemoryRouter initialEntries={[`/category/${slug}`]}>
-      <Routes>
-        <Route path="/category/:slug" element={<CategoryPage products={products} />} />
-      </Routes>
+      <AuthProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <Routes>
+              <Route path="/category/:slug" element={<CategoryPage products={products} />} />
+            </Routes>
+          </CartProvider>
+        </WishlistProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 
@@ -57,10 +66,16 @@ const renderCategoryPage = (slug, products = allMockProducts) =>
 const renderWithFullRouting = (slug, products = allMockProducts) =>
   render(
     <MemoryRouter initialEntries={[`/category/${slug}`]}>
-      <Routes>
-        <Route path="/category/:slug" element={<CategoryPage products={products} />} />
-        <Route path="/product/:id"    element={<div data-testid="product-detail-page">Product Detail</div>} />
-      </Routes>
+      <AuthProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <Routes>
+              <Route path="/category/:slug" element={<CategoryPage products={products} />} />
+              <Route path="/product/:id"    element={<div data-testid="product-detail-page">Product Detail</div>} />
+            </Routes>
+          </CartProvider>
+        </WishlistProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 
