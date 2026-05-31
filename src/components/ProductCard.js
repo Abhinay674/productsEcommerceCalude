@@ -1,21 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
+import AuthModal from './AuthModal';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleHeartClick = (e) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      setShowModal(true);
+    } else {
+      toggleWishlist(product);
+    }
+  };
+
+  const wishlisted = isWishlisted(product.id);
 
   return (
-    <div style={styles.card} onClick={() => navigate(`/product/${product.id}`)}>
-      <img src={product.image} alt={product.name} style={styles.image} />
-      <div style={styles.body}>
-        <p style={styles.name}>{product.name}</p>
-        <p style={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
+    <div style={styles.wrapper}>
+      <div style={styles.card} onClick={() => navigate(`/product/${product.id}`)}>
+        <img src={product.image} alt={product.name} style={styles.image} />
+        <div style={styles.body}>
+          <p style={styles.name}>{product.name}</p>
+          <p style={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
+        </div>
       </div>
+      <button
+        style={{
+          ...styles.heartBtn,
+          color: wishlisted ? '#e94560' : '#aaa',
+        }}
+        onClick={handleHeartClick}
+        aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+      >
+        {wishlisted ? '❤' : '♡'}
+      </button>
+      <AuthModal
+        isOpen={showModal}
+        initialTab="login"
+        onClose={() => setShowModal(false)}
+        onSuccess={() => setShowModal(false)}
+      />
     </div>
   );
 };
 
 const styles = {
+  wrapper: {
+    position: 'relative',
+  },
   card: {
     borderRadius: '10px',
     overflow: 'hidden',
@@ -44,6 +82,23 @@ const styles = {
     color: '#e94560',
     fontWeight: '700',
     fontSize: '16px',
+  },
+  heartBtn: {
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    zIndex: 1,
+    background: 'rgba(255,255,255,0.85)',
+    border: 'none',
+    borderRadius: '50%',
+    width: '32px',
+    height: '32px',
+    fontSize: '18px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
   },
 };
 
