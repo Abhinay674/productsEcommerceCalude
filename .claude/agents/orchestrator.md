@@ -17,10 +17,14 @@ Edit BACKLOG.md: change status todo → in-progress
 Run: git add BACKLOG.md
 Run: git commit -m "chore: start feature #NNN"
 
-STEP 2 - Create isolated branch
-Run: git checkout -b agent/feature-NNN
-All work happens on this branch.
-main branch is never touched.
+STEP 2 - Create isolated branch - MANDATORY
+Run this exact command:
+git checkout -b agent/feature-NNN
+VERIFY the branch was created by running:
+git branch --show-current
+If output is NOT agent/feature-NNN STOP immediately.
+DO NOT proceed until branch is confirmed.
+ALL subsequent commits go on this branch only.
 
 STEP 3 - Run Planner
 Spawn subagent: planner

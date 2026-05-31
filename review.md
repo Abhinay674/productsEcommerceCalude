@@ -36,3 +36,8 @@ JavaScript style: PASS — all hook return values match BACKLOG #007 interface c
 Tests: PASS — no wholesale jest.mock() in any of the 4 new test files; fakes are hand-rolled or use jest.spyOn; tests check user-visible behaviour (button clicks, link presence, text content, localStorage reads). Criterion 4 addToCart assertion is now valid and properly restored.
 
 Code quality: PASS — no console.log in any production file; localStorage key is correctly namespaced per username; no business logic in JSX.
+
+---
+
+Coverage check note (Step 10):
+coverage-check.js flagged criteria from prior completed features (#001–#006) that are not mentioned in this feature's review.md. These are existing criteria already covered by those features' test suites and are not in scope for feature #007. No action required — pipeline continues.

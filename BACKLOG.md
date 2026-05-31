@@ -224,7 +224,7 @@ ADRs:
 
 ---
 
-## #007 Wishlist with Heart Toggle — status: in-progress
+## #007 Wishlist with Heart Toggle — status: done
 
 Why: Users have no way to save products they like for later — every session starts fresh with no memory of interest.
 What: Add a localStorage-backed wishlist with a heart toggle on every product card, a dedicated /wishlist page, and a Navbar badge, all gated behind login.
