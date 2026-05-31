@@ -23,8 +23,8 @@ const renderNavbar = () =>
 describe('Navbar — logged out state', () => {
   test('shows Login and Register links when no user is logged in', () => {
     renderNavbar();
-    expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^login$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^register$/i })).toBeInTheDocument();
   });
 });
 
@@ -34,8 +34,8 @@ describe('Navbar — logged in state', () => {
     renderNavbar();
     expect(screen.getByText('alice')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /login/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /register/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^login$/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^register$/i })).not.toBeInTheDocument();
   });
 
   test('clicking Logout removes shopCurrentUser and shows Login/Register links', () => {
@@ -43,7 +43,7 @@ describe('Navbar — logged in state', () => {
     renderNavbar();
     fireEvent.click(screen.getByRole('button', { name: /logout/i }));
     expect(localStorage.getItem('shopCurrentUser')).toBeNull();
-    expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^login$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^register$/i })).toBeInTheDocument();
   });
 });

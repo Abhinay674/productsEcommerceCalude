@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import HamburgerMenu from './HamburgerMenu';
+import AuthModal from './AuthModal';
 
 const Navbar = () => {
   const { cartCount } = useCart();
   const { currentUser, logout } = useAuth();
+  const [modalTab, setModalTab] = useState(null);
 
   return (
     <nav style={styles.nav}>
@@ -22,8 +24,8 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to="/login" style={styles.authBtn}>Login</Link>
-            <Link to="/register" style={styles.authBtn}>Register</Link>
+            <button style={styles.authBtn} onClick={() => setModalTab('login')}>Login</button>
+            <button style={styles.authBtn} onClick={() => setModalTab('register')}>Register</button>
           </>
         )}
         <Link to="/cart" style={styles.cartLink}>
@@ -33,6 +35,12 @@ const Navbar = () => {
           )}
         </Link>
       </div>
+      <AuthModal
+        isOpen={modalTab !== null}
+        initialTab={modalTab || 'login'}
+        onClose={() => setModalTab(null)}
+        onSuccess={() => setModalTab(null)}
+      />
     </nav>
   );
 };
