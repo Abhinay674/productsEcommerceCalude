@@ -440,4 +440,43 @@ ADRs:
 - `editing: boolean` local `useState(false)` in `ProfilePage` — no cross-component consumers; consistent with local state pattern used throughout
 - Avatar initials derived inline in component — single use site, no helper file needed
 - Navbar `<span>` → `<Link to="/profile">` with existing `cartLink` style — one-line diff, no new style token
+
+---
+
+## #013 Product Review Form — status: todo
+
+Why: Users can see a static star rating on the product detail page but have no way to contribute their own reviews or read what others have written.
+What: Add an auth-gated review form below the product info on ProductDetailPage with a clickable 1–5 star picker and textarea, persisting submitted reviews to localStorage and displaying them immediately.
+
+Patterns to follow:
+
+- Local `useState` initialised from localStorage on mount (see `src/context/WishlistContext.js` localStorage init pattern)
+- Auth gate with inline message for logged-out users (see `src/pages/ProfilePage.js` logged-out message pattern)
+- Inline style objects as `const styles = {}` with dark-mode tokens via `useTheme()` (see `src/pages/ProductDetailPage.js`)
+
+Interface contracts:
+
+- `Review: { username: string, rating: number, text: string, date: string }` — `rating` is integer 1–5
+- `shopReviews_${productId}: Review[]` — localStorage key; absent = no reviews yet
+- `reviews: Review[]` — local `useState([])`; initialised from localStorage on mount; prepend on submit
+- `formRating: number` — local `useState(0)`; 0 = no star selected; valid range 1–5
+- `formText: string` — local `useState('')`; must be non-empty to enable submit
+
+Done criteria:
+[ ] Logged-out user visiting /product/:id sees "Please log in to write a review." and no form inputs (`expect(screen.getByText(/please log in to write a review/i)).toBeInTheDocument()`)
+[ ] Clicking star 3 sets formRating to 3 and marks stars 1–3 as aria-pressed="true", stars 4–5 as aria-pressed="false" (`fireEvent.click(star3)` → `expect(star3).toHaveAttribute('aria-pressed', 'true')` and `expect(star4).toHaveAttribute('aria-pressed', 'false')`)
+[ ] Submit button is disabled when formRating is 0 or formText is empty, enabled when both are set (`expect(submitBtn).toBeDisabled()` until both valid)
+[ ] Submitting a valid review prepends it to the reviews list and it is visible immediately with username, text, and date (`fireEvent.click(submitBtn)` → `expect(screen.getByText('Great product!')).toBeInTheDocument()`)
+[ ] Submitted review is written to `localStorage.getItem('shopReviews_${productId}')` as a JSON array with the new entry at index 0 (`expect(JSON.parse(localStorage.getItem('shopReviews_1'))[0].text).toBe('Great product!')`)
+[ ] Reviews pre-seeded in localStorage under `shopReviews_${productId}` are loaded and displayed on mount without submitting (`expect(screen.getByText('Loved it')).toBeInTheDocument()` when pre-seeded)
+
+Out of scope: updating product.rating from review average, one-review-per-user enforcement, edit or delete review, review on CategoryPage or WishlistPage, upvote/helpfulness rating, backend API
+
+ADRs:
+
+- All changes confined to `src/pages/ProductDetailPage.js` — reviews are page-local with no cross-component consumers; no new file needed
+- Submit prepends new review (`[newReview, ...reviews]`) — newest-first order, consistent with standard review UIs
+- Star picker uses 5 `<button>` elements with `aria-pressed` — accessible, testable without relying on visual colour; inlined in form body
+- `date: new Date().toLocaleDateString()` — locale string, no date library required
+- Form resets to `formRating=0, formText=''` after submit — allows user to post a second review immediately
 - All changes confined to `src/pages/ProductListingPage.js` — no new files, no new routes
