@@ -33,11 +33,11 @@ const getCards = () => screen.queryAllByRole('article').length
   || document.querySelectorAll('[style*="cursor: pointer"]').length;
 
 describe('ProductListingPage — search bar', () => {
-  test('renders all 50 products when query is empty', () => {
+  test('renders 8 products on page 1 when query is empty', () => {
     renderPage();
-    // Each ProductCard renders an img with the product name as alt
+    // Pagination shows PAGE_SIZE=8 per page
     const cards = screen.getAllByRole('img');
-    expect(cards.length).toBe(50);
+    expect(cards.length).toBe(8);
   });
 
   test('filters products by name on every keystroke', () => {
@@ -75,7 +75,7 @@ describe('ProductListingPage — search bar', () => {
     renderPage();
     fireEvent.change(getSearchInput(), { target: { value: 'watch' } });
     fireEvent.change(getSearchInput(), { target: { value: '' } });
-    expect(screen.getAllByRole('img')).toHaveLength(50);
+    expect(screen.getAllByRole('img')).toHaveLength(8); // back to page 1, PAGE_SIZE=8
     expect(screen.getByTestId('featured-carousel')).toBeInTheDocument();
   });
 });
