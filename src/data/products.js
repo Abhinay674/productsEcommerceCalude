@@ -8,6 +8,7 @@ const products = [
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
     featured: true,
+    rating: 4.5,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ const products = [
     description: 'Lightweight and responsive running shoes with breathable mesh upper and cushioned sole.',
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.0,
   },
   {
     id: 3,
@@ -25,6 +27,7 @@ const products = [
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
     featured: true,
+    rating: 4.5,
   },
   {
     id: 4,
@@ -33,6 +36,7 @@ const products = [
     description: '30L travel backpack with padded laptop compartment, USB charging port, and anti-theft design.',
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.0,
   },
   {
     id: 5,
@@ -41,6 +45,7 @@ const products = [
     description: 'UV400 polarized lenses in a lightweight titanium frame. Ideal for outdoor activities.',
     image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 3.5,
   },
   {
     id: 6,
@@ -50,6 +55,7 @@ const products = [
     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
     featured: true,
+    rating: 5.0,
   },
   {
     id: 7,
@@ -58,6 +64,7 @@ const products = [
     description: 'Tenkeyless mechanical keyboard with Cherry MX switches, RGB backlighting, and aluminum body.',
     image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.5,
   },
   {
     id: 8,
@@ -66,6 +73,7 @@ const products = [
     description: 'A5 dot-grid notebook with 200 acid-free pages, ribbon bookmark, and expandable pocket.',
     image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.0,
   },
 
   // ── electronics (ids 9–15, total 10 with ids 1, 6, 7) ──
@@ -76,6 +84,7 @@ const products = [
     description: 'Portable waterproof speaker with 360-degree sound and 12-hour playtime.',
     image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.0,
   },
   {
     id: 10,
@@ -84,6 +93,7 @@ const products = [
     description: 'Fitness smartwatch with heart-rate monitor, GPS, and 7-day battery life.',
     image: 'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.5,
   },
   {
     id: 11,
@@ -92,6 +102,7 @@ const products = [
     description: '7-in-1 USB-C hub with 4K HDMI, 100W PD charging, and SD card reader.',
     image: 'https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 3.5,
   },
   {
     id: 12,
@@ -100,6 +111,7 @@ const products = [
     description: 'Ergonomic wireless mouse with silent clicks, 12-month battery, and multi-device pairing.',
     image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.0,
   },
   {
     id: 13,
@@ -108,6 +120,7 @@ const products = [
     description: 'True wireless earbuds with active noise cancellation and 24-hour total battery.',
     image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.5,
   },
   {
     id: 14,
@@ -116,6 +129,7 @@ const products = [
     description: '1TB portable SSD with USB 3.2 Gen 2 delivering up to 1050 MB/s read speed.',
     image: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.5,
   },
   {
     id: 15,
@@ -124,6 +138,7 @@ const products = [
     description: 'Adjustable LED desk lamp with 5 color temperatures, USB charging port, and touch dimmer.',
     image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&h=300&fit=crop&auto=format',
     category: 'electronics',
+    rating: 4.0,
   },
 
   // ── fashion (ids 16–22, total 10 with ids 2, 3, 5) ──
@@ -134,6 +149,7 @@ const products = [
     description: 'Stretch-cotton slim chinos with a modern tapered leg and wrinkle-resistant finish.',
     image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 3.5,
   },
   {
     id: 17,
@@ -142,6 +158,7 @@ const products = [
     description: 'Full-grain leather belt with a brushed silver buckle, available in multiple sizes.',
     image: 'https://images.unsplash.com/photo-1624890240392-35f8f8d3d4e1?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.0,
   },
   {
     id: 18,
@@ -150,6 +167,7 @@ const products = [
     description: 'Breathable 100% linen shirt perfect for summer days and casual occasions.',
     image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.0,
   },
   {
     id: 19,
@@ -158,6 +176,7 @@ const products = [
     description: 'Soft merino-wool blend beanie that keeps you warm on cold days.',
     image: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 3.5,
   },
   {
     id: 20,
@@ -166,6 +185,7 @@ const products = [
     description: 'Genuine leather Chelsea boots with elastic side panels and a stacked heel.',
     image: 'https://images.unsplash.com/photo-1542884748-2b87b36c6b90?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.5,
   },
   {
     id: 21,
@@ -174,6 +194,7 @@ const products = [
     description: 'Classic stonewashed denim jacket with contrast stitching and chest pockets.',
     image: 'https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.0,
   },
   {
     id: 22,
@@ -182,6 +203,7 @@ const products = [
     description: 'Luxuriously soft merino wool scarf in a versatile herringbone weave.',
     image: 'https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?w=400&h=300&fit=crop&auto=format',
     category: 'fashion',
+    rating: 4.5,
   },
 
   // ── bags (ids 23–31, total 10 with id 4) ──
@@ -192,6 +214,7 @@ const products = [
     description: 'Heavy-duty canvas tote with reinforced handles and a zippered inner pocket.',
     image: 'https://images.unsplash.com/photo-1591561954555-607968c989ab?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 3.5,
   },
   {
     id: 24,
@@ -200,6 +223,7 @@ const products = [
     description: 'Full-grain leather messenger bag with adjustable strap and multiple organiser pockets.',
     image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.5,
   },
   {
     id: 25,
@@ -208,6 +232,7 @@ const products = [
     description: 'Spacious 40L duffel bag with wet-dry compartment and ventilated shoe pocket.',
     image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.0,
   },
   {
     id: 26,
@@ -216,6 +241,7 @@ const products = [
     description: 'Compact vegan leather crossbody bag with zip closure and detachable chain strap.',
     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.0,
   },
   {
     id: 27,
@@ -224,6 +250,7 @@ const products = [
     description: 'Hardshell 20-inch carry-on with 360-degree spinner wheels and TSA-approved lock.',
     image: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.5,
   },
   {
     id: 28,
@@ -232,6 +259,7 @@ const products = [
     description: 'Lightweight nylon fanny pack with adjustable waist strap and three zippered pockets.',
     image: 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 3.5,
   },
   {
     id: 29,
@@ -240,6 +268,7 @@ const products = [
     description: 'Slim genuine leather clutch with card slots and a magnetic snap closure.',
     image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.0,
   },
   {
     id: 30,
@@ -248,6 +277,7 @@ const products = [
     description: '20L hiking daypack with hydration bladder sleeve and ergonomic shoulder straps.',
     image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 4.5,
   },
   {
     id: 31,
@@ -256,6 +286,7 @@ const products = [
     description: 'Lightweight polyester drawstring backpack, ideal for gym visits and daily commutes.',
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop&auto=format',
     category: 'bags',
+    rating: 3.5,
   },
 
   // ── books (ids 32–40, total 10 with id 8) ──
@@ -266,6 +297,7 @@ const products = [
     description: 'A proven framework for building good habits and breaking bad ones, by James Clear.',
     image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 5.0,
   },
   {
     id: 33,
@@ -274,6 +306,7 @@ const products = [
     description: 'Don Norman\'s classic guide to human-centred design and why products succeed or fail.',
     image: 'https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.5,
   },
   {
     id: 34,
@@ -282,6 +315,7 @@ const products = [
     description: 'Cal Newport\'s rules for focused success in a distracted world.',
     image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.5,
   },
   {
     id: 35,
@@ -290,6 +324,7 @@ const products = [
     description: 'A timeless guide to software craftsmanship for developers at every stage of their career.',
     image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 5.0,
   },
   {
     id: 36,
@@ -298,6 +333,7 @@ const products = [
     description: 'Daniel Kahneman explores the two systems that drive the way we think and make decisions.',
     image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.5,
   },
   {
     id: 37,
@@ -306,6 +342,7 @@ const products = [
     description: 'Yuval Noah Harari\'s brief history of humankind from the Stone Age to the present.',
     image: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.5,
   },
   {
     id: 38,
@@ -314,6 +351,7 @@ const products = [
     description: 'Robert C. Martin\'s handbook of agile software craftsmanship and best coding practices.',
     image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.5,
   },
   {
     id: 39,
@@ -322,6 +360,7 @@ const products = [
     description: 'Eric Ries shows how continuous innovation creates radically successful businesses.',
     image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.0,
   },
   {
     id: 40,
@@ -330,6 +369,7 @@ const products = [
     description: 'Peter Thiel\'s notes on startups and how to build companies that create new things.',
     image: 'https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?w=400&h=300&fit=crop&auto=format',
     category: 'books',
+    rating: 4.0,
   },
 
   // ── sports (ids 41–50, total 10) ──
@@ -340,6 +380,7 @@ const products = [
     description: 'Non-slip 6mm TPE yoga mat with alignment lines and carrying strap.',
     image: 'https://images.unsplash.com/photo-1601925228946-d2571c7791e2?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.5,
   },
   {
     id: 42,
@@ -348,6 +389,7 @@ const products = [
     description: 'Set of 5 latex resistance bands for strength training, rehabilitation, and stretching.',
     image: 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.0,
   },
   {
     id: 43,
@@ -356,6 +398,7 @@ const products = [
     description: 'Space-saving adjustable dumbbells ranging from 2.5 kg to 25 kg per hand.',
     image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.5,
   },
   {
     id: 44,
@@ -364,6 +407,7 @@ const products = [
     description: 'Speed jump rope with ball-bearing handles and adjustable steel cable.',
     image: 'https://images.unsplash.com/photo-1601925228910-97773f40d3f3?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.0,
   },
   {
     id: 45,
@@ -372,6 +416,7 @@ const products = [
     description: 'High-density EVA foam roller for deep-tissue muscle recovery and myofascial release.',
     image: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.0,
   },
   {
     id: 46,
@@ -380,6 +425,7 @@ const products = [
     description: 'Aerodynamic cycling helmet with 18 vents, MIPS safety system, and adjustable fit dial.',
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.5,
   },
   {
     id: 47,
@@ -388,6 +434,7 @@ const products = [
     description: 'Graphite-composite tennis racket with 100 sq. in. head size, ideal for intermediate players.',
     image: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.0,
   },
   {
     id: 48,
@@ -396,6 +443,7 @@ const products = [
     description: 'Anti-fog UV-protection swim goggles with a comfortable silicone seal.',
     image: 'https://images.unsplash.com/photo-1600679472829-3044539ce405?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 3.5,
   },
   {
     id: 49,
@@ -404,6 +452,7 @@ const products = [
     description: 'Complete badminton set with 2 rackets, 3 shuttlecocks, and a carrying bag.',
     image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.0,
   },
   {
     id: 50,
@@ -412,6 +461,7 @@ const products = [
     description: 'BPA-free stainless steel insulated water bottle that keeps drinks cold for 24 hours.',
     image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=300&fit=crop&auto=format',
     category: 'sports',
+    rating: 4.5,
   },
 ];
 

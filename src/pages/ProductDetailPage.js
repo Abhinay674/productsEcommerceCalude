@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import products from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
+import StarRating from '../components/StarRating';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -126,6 +127,7 @@ const ProductDetailPage = () => {
         <img src={product.image} alt={product.name} style={styles.image} />
         <div style={styles.info}>
           <h1 style={styles.name}>{product.name}</h1>
+          <StarRating rating={product.rating} />
           <p style={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
           <p style={styles.description}>{product.description}</p>
           <div style={styles.stepper}>

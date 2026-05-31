@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useTheme } from '../context/ThemeContext';
 import AuthModal from './AuthModal';
+import StarRating from './StarRating';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ const ProductCard = ({ product }) => {
         <img src={product.image} alt={product.name} style={styles.image} />
         <div style={styles.body}>
           <p style={styles.name}>{product.name}</p>
+          <StarRating rating={product.rating} />
           <p style={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
         </div>
       </div>
