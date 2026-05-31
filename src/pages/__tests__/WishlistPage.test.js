@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '../../context/AuthContext';
 import { WishlistProvider } from '../../context/WishlistContext';
 import { CartProvider, useCart } from '../../context/CartContext';
+import * as CartModule from '../../context/CartContext';
 import WishlistPage from '../WishlistPage';
 
 // ---------------------------------------------------------------------------
@@ -161,36 +162,37 @@ describe('WishlistPage — rendering (criterion 3)', () => {
 
 describe('WishlistPage — Add to Cart (criterion 4)', () => {
   test('clicking "Add to Cart" calls addToCart with (product, 1)', () => {
+    const mockAddToCart = jest.fn();
+    const useCartSpy = jest.spyOn(CartModule, 'useCart').mockReturnValue({
+      items: [],
+      addToCart: mockAddToCart,
+      updateQuantity: jest.fn(),
+      removeFromCart: jest.fn(),
+      clearCart: jest.fn(),
+      cartCount: 0,
+    });
+
     seedUser('alice');
     seedWishlist('alice', [productA]);
-
-    // Spy on addToCart by capturing it from CartContext via a companion
-    let capturedAddToCart;
-    const CartSpy = () => {
-      const { addToCart } = useCart();
-      capturedAddToCart = jest.fn(addToCart);
-      return null;
-    };
 
     render(
       <MemoryRouter initialEntries={['/wishlist']}>
         <AuthProvider>
           <WishlistProvider>
-            <CartProvider>
-              <CartSpy />
-              <WishlistPage />
-            </CartProvider>
+            <WishlistPage />
           </WishlistProvider>
         </AuthProvider>
       </MemoryRouter>
     );
 
-    // Swap in the spy — we need WishlistPage to use the spy, but since context
-    // is already provided, we verify the behaviour by checking cartCount instead
     fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+
+    expect(mockAddToCart).toHaveBeenCalledWith(productA, 1);
 
     // The item should still be in the wishlist (not removed on Add to Cart)
     expect(screen.getByText(productA.name)).toBeInTheDocument();
+
+    useCartSpy.mockRestore();
   });
 
   test('item remains in the wishlist after clicking "Add to Cart"', () => {
