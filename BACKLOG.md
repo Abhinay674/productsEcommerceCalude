@@ -405,7 +405,7 @@ ADRs:
 
 ---
 
-## #012 User Profile Page — status: todo
+## #012 User Profile Page — status: done
 
 Why: Logged-in users have no way to view or update their name and email — the only visible identity is a plain username text in the Navbar.
 What: Add a /profile page showing avatar initials, name, username, and email with an inline edit form that persists changes to localStorage via AuthContext.
