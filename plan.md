@@ -1,112 +1,144 @@
-# Plan — Feature #004 Hamburger Menu with Category Navigation
+﻿---
+# Plan — Feature #007 Wishlist with Heart Toggle
 
 ## New files to create
 
-- `src/components/HamburgerMenu.js` — side-drawer toggle component rendered inside Navbar
-- `src/pages/CategoryPage.js` — page that filters products by `slug` from `useParams()` and renders a grid of ProductCard components
-- `src/components/__tests__/HamburgerMenu.test.js` — tests for toggle open/close and 5 category links
-- `src/pages/__tests__/CategoryPage.test.js` — tests for 10 ProductCard renders per slug and ProductCard navigation
+- src/context/WishlistContext.js
+- src/pages/WishlistPage.js
 
 ## Files to modify
 
-- `src/data/products.js` — add `category` field to all 8 existing products and append 42 new product objects so every category (`electronics`, `fashion`, `bags`, `books`, `sports`) has exactly 10 products (50 total); preserve existing `id`, `name`, `price`, `description`, `image`, and `featured` fields unchanged
-- `src/components/Navbar.js` — import and render `<HamburgerMenu />` between the brand link and the cart link
-- `src/App.js` — import `CategoryPage` and add `<Route path="/category/:slug" element={<CategoryPage />} />` inside the existing `<Routes>` block
+- src/components/ProductCard.js
+  - Wrap the outer card div in a position:relative container div
+  - Add an absolutely-positioned heart button overlay in the top-right corner
+  - Import and call useWishlist() to read isWishlisted and toggleWishlist
+  - Import and call useAuth() to read currentUser
+  - Manage local useState(false) showModal to control AuthModal visibility
+  - On heart button click: e.stopPropagation(); if !currentUser set showModal(true); else call toggleWishlist(product)
+  - Mount AuthModal inside the component; isOpen={showModal}; onClose and onSuccess both call setShowModal(false)
+  - Heart renders filled/red (#e94560) when isWishlisted(product.id) is true; outlined/grey (#aaa) otherwise
 
-## TypeScript interfaces (exact shapes)
+- src/components/Navbar.js
+  - Import useWishlist from src/context/WishlistContext
+  - Destructure wishlistCount from useWishlist()
+  - When currentUser is truthy: render a Link to="/wishlist" with text "Wishlist" and a badge showing wishlistCount (badge only rendered when wishlistCount > 0, matching the existing cartCount pattern)
+  - When currentUser is null: do not render the wishlist link
 
-This is a JavaScript project. Product data shape (JSDoc):
-
-```js
-/**
- * @typedef {Object} Product
- * @property {number}  id          - Unique integer, 1-indexed, no gaps
- * @property {string}  name        - Human-readable product name
- * @property {number}  price       - Price in Indian Rupees (integer or float)
- * @property {string}  description - One-sentence product description
- * @property {string}  image       - Unsplash URL with w=400&h=300&fit=crop&auto=format
- * @property {string}  category    - One of: "electronics" | "fashion" | "bags" | "books" | "sports"
- * @property {boolean} [featured]  - Optional; only present on existing featured products (ids 1, 3, 6)
- */
-```
-
-Category distribution in `products.js` (exactly 10 per category, 50 total):
-
-| category    | existing product ids to assign  | new ids to add |
-|-------------|----------------------------------|----------------|
-| electronics | 1, 6, 7                          | 9–15 (7 new)   |
-| fashion     | 2, 3, 5                          | 16–22 (7 new)  |
-| bags        | 4                                | 23–31 (9 new)  |
-| books       | 8                                | 32–40 (9 new)  |
-| sports      | (none existing)                  | 41–50 (10 new) |
-
-All 50 products must be present in the exported default array. No existing product may be removed or have its non-`category` fields altered. Existing `featured: true` flags on ids 1, 3, 6 must be preserved.
+- src/App.js
+  - Import WishlistProvider from ./context/WishlistContext
+  - Place WishlistProvider immediately inside AuthProvider, wrapping CartProvider (and all children)
+  - Import WishlistPage from ./pages/WishlistPage
+  - Add <Route path="/wishlist" element={<WishlistPage />} /> inside Routes
 
 ## Hook contracts (exact signatures)
 
-No new custom hooks are needed for this feature. `HamburgerMenu` manages its own open state inline with `useState`.
+```js
+// Exported from src/context/WishlistContext.js
+export const useWishlist = () => useContext(WishlistContext);
+// Returns:
+// {
+//   items: Product[],
+//   toggleWishlist: (product: Product) => void,
+//   isWishlisted: (id: number) => boolean,
+//   wishlistCount: number,
+// }
+```
+
+- items — full Product objects for the logged-in user; reset to [] when currentUser is null
+- toggleWishlist(product) — if product.id already in items, removes it; otherwise appends it; writes updated array to localStorage key shopWishlist_${currentUser.username}; no-op when currentUser is null
+- isWishlisted(id) — returns true when items contains an object whose .id === id; false otherwise
+- wishlistCount — items.length (number)
 
 ## Component props (exact signatures)
 
-### `HamburgerMenu()`
+### ProductCard
+```
+ProductCard({
+  product: {
+    id: number,          // required
+    name: string,        // required
+    price: number,       // required
+    description: string, // required
+    image: string,       // required
+    category: string,    // required
+    featured?: boolean,  // optional
+  }
+})
+```
+Added behaviour (this feature):
+- Outer wrapper div: position: 'relative'
+- Heart button: position: 'absolute', top: '8px', right: '8px', zIndex: 1
+- Heart button click: e.stopPropagation(); auth gate then toggleWishlist
+- AuthModal rendered inside component; isOpen={showModal}; initialTab="login"
+
+### WishlistPage
+No external props — page component, reads context directly.
+
+Rendered structure:
+- Heading: <h1>My Wishlist</h1>
+- Empty state (items.length === 0): <p>Your wishlist is empty.</p>
+- Item rows (items.length > 0): one row per Product containing:
+  - <img src={product.image} alt={product.name} />
+  - <span>{product.name}</span>
+  - <span>&#x20B9;{product.price.toLocaleString('en-IN')}</span>
+  - <button onClick={() => addToCart(product, 1)}>Add to Cart</button>
+  - <button onClick={() => toggleWishlist(product)}> (remove/heart icon) </button>
+
+### Navbar (modified, no new props)
+No prop changes. Reads wishlistCount from useWishlist(). Conditionally renders wishlist Link.
+
+## Context shape (exact)
 
 ```js
-// Props: none
-// Internal state:
-const [isOpen, setIsOpen] = useState(false);
+// WishlistContext provider value
+{
+  items: Product[],               // [] when not logged in or wishlist is empty
+  toggleWishlist: (product: Product) => void,
+  isWishlisted: (id: number) => boolean,
+  wishlistCount: number,          // items.length
+}
 ```
 
-- Renders at all times: a `<button>` with `aria-label="Toggle menu"` and text content `☰`
-- Renders only when `isOpen === true`: a `<div>` with `data-testid="category-drawer"` containing exactly 5 `<Link>` elements in this order:
-  1. `<Link to="/category/electronics">Electronics</Link>`
-  2. `<Link to="/category/fashion">Fashion</Link>`
-  3. `<Link to="/category/bags">Bags</Link>`
-  4. `<Link to="/category/books">Books</Link>`
-  5. `<Link to="/category/sports">Sports</Link>`
-- When `isOpen === false`: the drawer `<div>` must NOT be present in the DOM (conditional render, not hidden via CSS)
-- Clicking the toggle button flips `isOpen` between `false` and `true`
-- Styles defined in a `const styles = {}` block at the bottom of the file (inline style objects, no CSS classes)
+WishlistProvider internal implementation notes:
+- const [items, setItems] = useState([])
+- useEffect(() => { if (!currentUser) { setItems([]); return; } const key = 'shopWishlist_' + currentUser.username; const stored = localStorage.getItem(key); setItems(stored ? JSON.parse(stored) : []); }, [currentUser])
+- toggleWishlist writes to localStorage on every call
+- isWishlisted defined inline: (id) => items.some(p => p.id === id)
+- wishlistCount derived: items.length
 
-### `CategoryPage()`
+## localStorage key format
 
-```js
-// Props: none
-// Route param consumed:
-const { slug } = useParams(); // slug: "electronics" | "fashion" | "bags" | "books" | "sports"
-```
+Key pattern:  shopWishlist_${currentUser.username}
+Value format: JSON-stringified Product[] (full objects)
 
-- Imports `products` from `'../data/products'`
-- Computes: `const filtered = products.filter(p => p.category === slug);`
-- Renders a `<main>` containing:
-  - `<h1>` whose text is the slug with its first letter uppercased (e.g. `"electronics"` → `"Electronics"`)
-  - A CSS grid `<div>` with `filtered.map(product => <ProductCard key={product.id} product={product} />)`
-- Does NOT render `<FeaturedCarousel />`
-- For each of the 5 valid slugs the rendered grid contains exactly 10 `<ProductCard>` elements
-- Styles defined in a `const styles = {}` block at the bottom of the file
+Example:
+  key:   "shopWishlist_alice"
+  value: '[{"id":3,"name":"Widget","price":499,"description":"A widget","image":"/img.jpg","category":"gadgets"}]'
+
+Rules:
+- One key per username — prevents cross-user data leakage
+- Full Product objects stored, not just IDs — avoids a lookup on load; products.js is static
+- Written with: localStorage.setItem(key, JSON.stringify(updatedItems)) on every toggleWishlist call
+- Read with: JSON.parse(localStorage.getItem(key) || '[]') on WishlistProvider mount and on currentUser change
 
 ## Build order
 
-1. **`src/data/products.js`** — Add `category` field to the 8 existing products and append 42 new product objects so all 5 categories reach exactly 10 items. Verify: `products.filter(p => p.category === 'electronics').length === 10` (and same assertion for each of the other 4 slugs).
-
-2. **`src/components/HamburgerMenu.js`** — Create the component with `useState(false)` for `isOpen`. Render the `☰` toggle button with `aria-label="Toggle menu"`. Conditionally render `<div data-testid="category-drawer">` with 5 `<Link>` elements only when `isOpen === true`. Add `const styles = {}` block at bottom.
-
-3. **`src/components/Navbar.js`** — Import `HamburgerMenu` from `'./HamburgerMenu'`. Insert `<HamburgerMenu />` into the `<nav>` JSX between the brand `<Link>` and the cart `<Link>`. No other changes to Navbar logic or styles.
-
-4. **`src/pages/CategoryPage.js`** — Create the page component. Import `useParams` from `'react-router-dom'`, `products` from `'../data/products'`, and `ProductCard` from `'../components/ProductCard'`. Filter products by slug. Render `<h1>` with capitalised slug and product grid. Add `const styles = {}` block at bottom.
-
-5. **`src/App.js`** — Import `CategoryPage` from `'./pages/CategoryPage'`. Add `<Route path="/category/:slug" element={<CategoryPage />} />` as a sibling route inside the existing `<Routes>` block.
-
-6. **`src/components/__tests__/HamburgerMenu.test.js`** — Tests: (a) toggle button renders with text `☰`; (b) drawer is absent before first click; (c) clicking toggle renders drawer with exactly 5 links; (d) clicking toggle a second time removes drawer from DOM.
-
-7. **`src/pages/__tests__/CategoryPage.test.js`** — Tests: (a) for each of the 5 slugs, rendered `ProductCard` count equals 10; (b) clicking a `ProductCard` calls `navigate('/product/:id')` matching that product's id.
+1. src/context/WishlistContext.js — create first; no dependency on other new files
+2. src/pages/WishlistPage.js — create; depends on WishlistContext (step 1) and CartContext (already exists)
+3. src/App.js — modify; add WishlistProvider wrap and /wishlist route
+4. src/components/ProductCard.js — modify; add heart overlay using WishlistContext and AuthModal
+5. src/components/Navbar.js — modify last; add wishlist link using WishlistContext
 
 ## Route plan
 
-| Path                | Component            | Notes                                                        |
-|---------------------|----------------------|--------------------------------------------------------------|
-| `/`                 | `ProductListingPage` | Unchanged. Renders `FeaturedCarousel` + all 50 products      |
-| `/product/:id`      | `ProductDetailPage`  | Unchanged                                                    |
-| `/cart`             | `CartPage`           | Unchanged                                                    |
-| `/category/:slug`   | `CategoryPage`       | NEW. `slug` is one of the 5 category strings. Renders exactly 10 `ProductCard`s; no `FeaturedCarousel` |
+New route:
+  Path:       /wishlist
+  Component:  WishlistPage
+  Auth gate:  Soft — page renders for all users; empty state shown when not logged in; heart toggle requires login
 
-All routes remain inside the existing `<BrowserRouter>` + `<CartProvider>` wrapper in `App.js`. No new context providers or router wrappers are needed.
+Existing routes (unchanged):
+  /                  -> ProductListingPage
+  /product/:id       -> ProductDetailPage
+  /cart              -> CartPage
+  /category/:slug    -> CategoryPage
+---
