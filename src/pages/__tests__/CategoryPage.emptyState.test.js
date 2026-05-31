@@ -8,6 +8,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
+import { CartProvider } from '../../context/CartContext';
 import CategoryPage from '../CategoryPage';
 import products from '../../data/products';
 
@@ -18,9 +21,15 @@ import products from '../../data/products';
 const renderCategoryPage = (slug) =>
   render(
     <MemoryRouter initialEntries={[`/category/${slug}`]}>
-      <Routes>
-        <Route path="/category/:slug" element={<CategoryPage />} />
-      </Routes>
+      <AuthProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <Routes>
+              <Route path="/category/:slug" element={<CategoryPage />} />
+            </Routes>
+          </CartProvider>
+        </WishlistProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 

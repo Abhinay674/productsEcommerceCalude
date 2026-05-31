@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { CartProvider } from '../../context/CartContext';
 import { AuthProvider } from '../../context/AuthContext';
+import { WishlistProvider } from '../../context/WishlistContext';
 import Navbar from '../Navbar';
 
 beforeEach(() => {
@@ -13,9 +14,11 @@ const renderNavbar = () =>
   render(
     <MemoryRouter>
       <AuthProvider>
-        <CartProvider>
-          <Navbar />
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <Navbar />
+          </CartProvider>
+        </WishlistProvider>
       </AuthProvider>
     </MemoryRouter>
   );

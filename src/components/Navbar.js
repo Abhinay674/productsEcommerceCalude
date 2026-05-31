@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import HamburgerMenu from './HamburgerMenu';
 import AuthModal from './AuthModal';
 
 const Navbar = () => {
   const { cartCount } = useCart();
   const { currentUser, logout } = useAuth();
+  const { wishlistCount } = useWishlist();
   const [modalTab, setModalTab] = useState(null);
 
   return (
@@ -27,6 +29,14 @@ const Navbar = () => {
             <button style={styles.authBtn} onClick={() => setModalTab('login')}>Login</button>
             <button style={styles.authBtn} onClick={() => setModalTab('register')}>Register</button>
           </>
+        )}
+        {currentUser && (
+          <Link to="/wishlist" style={styles.cartLink}>
+            Wishlist
+            {wishlistCount > 0 && (
+              <span style={styles.badge}>{wishlistCount}</span>
+            )}
+          </Link>
         )}
         <Link to="/cart" style={styles.cartLink}>
           Cart

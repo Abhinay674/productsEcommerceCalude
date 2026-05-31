@@ -224,7 +224,7 @@ ADRs:
 
 ---
 
-## #007 Wishlist with Heart Toggle — status: in-progress
+## #007 Wishlist with Heart Toggle — status: done
 
 Why: Users have no way to save products they like for later — every session starts fresh with no memory of interest.
 What: Add a localStorage-backed wishlist with a heart toggle on every product card, a dedicated /wishlist page, and a Navbar badge, all gated behind login.
@@ -261,3 +261,39 @@ ADRs:
 - Full `Product` objects stored (not just IDs) — avoids a products lookup on load; products.js is static so no staleness risk
 - Heart rendered as an absolutely-positioned `button` overlay on `ProductCard` — no card layout change; card click-to-navigate still works via the outer div
 - Wishlist Navbar link hidden when logged out — feature is auth-gated; a zero-count link with no function would mislead anonymous users
+
+---
+
+## #008 Dark Mode Toggle — status: in-progress
+
+Why: Users cannot switch the app to a dark color scheme and any preference is lost on page reload.
+What: Add a localStorage-backed ThemeContext with a 🌙/☀️ toggle button in the Navbar that switches all page content between light and dark color tokens.
+
+Patterns to follow:
+
+- React Context + useState + localStorage for persistent shared state (see src/context/AuthContext.js and src/context/WishlistContext.js)
+- Inline style objects as const styles = {} at the bottom of each file, with theme-conditional values computed from useTheme() (see every component)
+
+Interface contracts:
+
+- useTheme(): { isDark: boolean, toggleTheme(): void }
+- ThemeProvider: wraps children, reads localStorage key shopTheme on mount, writes on every toggle
+- shopTheme: 'dark' | 'light' — localStorage key; absent = light mode default
+
+Done criteria:
+[ ] Clicking the 🌙 button in Navbar when isDark is false calls toggleTheme and Navbar renders ☀️; ProductCard background becomes #1e1e1e (`expect(getByRole('button', { name: /toggle theme/i })).toHaveTextContent('☀️')`)
+[ ] Clicking the ☀️ button in Navbar when isDark is true calls toggleTheme and Navbar renders 🌙; ProductCard background becomes #fff (`expect(getByRole('button', { name: /toggle theme/i })).toHaveTextContent('🌙')`)
+[ ] With shopTheme pre-seeded as 'dark' in localStorage before mount, ThemeProvider initialises isDark as true (`expect(isDark).toBe(true)`)
+[ ] toggleTheme writes 'light' to localStorage when switching from dark to light, and 'dark' when switching from light to dark (`expect(localStorage.getItem('shopTheme')).toBe('light' | 'dark')`)
+[ ] The toggle button is present and functional regardless of currentUser value — logged in and logged out both render the button (`expect(getByRole('button', { name: /toggle theme/i })).toBeInTheDocument()`)
+
+Out of scope: system prefers-color-scheme detection, per-user theme tied to account, CSS variables approach, animated theme transitions, dark-mode Navbar styling
+
+ADRs:
+
+- ThemeProvider placed outside AuthProvider in App.js — theme is app-global with no dependency on auth state; outermost non-router provider position
+- isDark initialised from localStorage.getItem('shopTheme') === 'dark' — absent key defaults to false (light mode) without needing a fallback value
+- Each component calls useTheme() and applies colors inline — consistent with existing const styles = {} pattern; avoids index.css changes
+- Navbar background (#1a1a2e) excluded from theme tokens — it is a brand color, not a theme-reactive surface
+- Accent color (#e94560) excluded from theme tokens — sufficient contrast on both #fff and #1e1e1e card backgrounds
+- localStorage key shopTheme follows shopXxx naming convention used by shopCurrentUser, shopUsers, and shopWishlist_${username}
