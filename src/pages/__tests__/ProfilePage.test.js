@@ -51,7 +51,8 @@ describe('ProfilePage — display fields', () => {
   test('shows name, username and "—" for email when email is not set', () => {
     seedUser({ name: 'John Doe', username: 'johndoe' });
     renderPage();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    // name appears in avatar row and name field
+    expect(screen.getAllByText('John Doe').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('johndoe')).toBeInTheDocument();
     expect(screen.getByText('—')).toBeInTheDocument();
   });
@@ -111,6 +112,7 @@ describe('ProfilePage — edit form', () => {
     fireEvent.change(screen.getByDisplayValue('John Doe'), { target: { value: 'Jane Doe' } });
     fireEvent.click(screen.getByRole('button', { name: /save/i }));
     expect(screen.queryByRole('button', { name: /save/i })).not.toBeInTheDocument();
-    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    // "Jane Doe" appears in avatar row and name field — use getAllByText
+    expect(screen.getAllByText('Jane Doe').length).toBeGreaterThanOrEqual(1);
   });
 });
