@@ -367,3 +367,39 @@ ADRs:
 - Fixed colors #1a1a2e background / #fff text — brand color has sufficient contrast in both light and dark mode; useTheme() not needed
 - zIndex: 99 — sits below sticky Navbar (zIndex: 100) so Navbar always renders on top during scroll
 - aria-label="Back to top" — allows tests to locate the button by accessible role+name without relying on the ↑ character
+
+---
+
+## #011 Pagination on Product Listing Page — status: todo
+
+Why: Users browsing all 50 products must scroll through a single unbounded grid with no way to navigate discrete pages.
+What: Add client-side pagination to ProductListingPage showing 8 products per page with Prev/Next buttons and numbered page buttons driven by local state.
+
+Patterns to follow:
+
+- Local `useState` for page-scoped state with no cross-component consumers (see `query` state in `src/pages/ProductListingPage.js`)
+- Inline style objects as `const styles = {}` with dark-mode tokens via `useTheme()` (see `src/pages/ProductListingPage.js`)
+
+Interface contracts:
+
+- `PAGE_SIZE: number` — 8, module-scope constant in `ProductListingPage.js`
+- `currentPage: number` — local `useState(1)` in `ProductListingPage`; reset to 1 inside the `setQuery` handler
+- `totalPages: number` — `Math.ceil(filteredProducts.length / PAGE_SIZE)`, derived
+- `pagedProducts: Product[]` — `filteredProducts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)`, derived
+
+Done criteria:
+[ ] Page 1 renders exactly 8 ProductCard components from the start of the product list (`expect(cards).toHaveLength(8)`)
+[ ] Clicking Next advances to page 2 and renders the next 8 products (`fireEvent.click(nextBtn)` → `expect(cards).toHaveLength(8)` and `expect(cards[0]).toHaveTextContent(products[8].name)`)
+[ ] Clicking a page number button jumps directly to that page (`fireEvent.click(pageBtn3)` → `expect(cards[0]).toHaveTextContent(products[16].name)`)
+[ ] Prev button is disabled on page 1; Next button is disabled on the last page (`expect(prevBtn).toBeDisabled()` on page 1; `expect(nextBtn).toBeDisabled()` on page 7)
+[ ] Typing in the search input resets currentPage to 1 (`fireEvent.change(input, { target: { value: 'watch' } })` → page indicator shows page 1)
+[ ] FeaturedCarousel is present on page 1 with no query and absent on page 2 (`expect(carousel).toBeInTheDocument()` on page 1; `expect(carousel).not.toBeInTheDocument()` on page 2)
+
+Out of scope: URL query param persistence, pagination on CategoryPage or WishlistPage, items-per-page selector, ellipsis page ranges, scroll-to-top on page change
+
+ADRs:
+
+- `currentPage` local `useState(1)` chosen over context — no consumers outside `ProductListingPage`; consistent with `query` state pattern in the same file
+- Page reset placed inside `setQuery` handler (`setQuery(v); setCurrentPage(1)`) — simpler than a `useEffect` dependency on `query`
+- Carousel condition updated from `!query` to `!query && currentPage === 1` — minimal one-token diff to existing line
+- All changes confined to `src/pages/ProductListingPage.js` — no new files, no new routes
