@@ -221,3 +221,43 @@ ADRs:
 - `useState` local to `ProductListingPage` chosen over context — query has no consumers outside this page
 - `String.includes` (case-insensitive, trimmed) chosen over regex — sufficient for name substring match, no escaping edge cases
 - Carousel hidden via `{!query && <FeaturedCarousel />}` — single conditional expression, no extra boolean flag needed
+
+---
+
+## #007 Wishlist with Heart Toggle — status: todo
+
+Why: Users have no way to save products they like for later — every session starts fresh with no memory of interest.
+What: Add a localStorage-backed wishlist with a heart toggle on every product card, a dedicated /wishlist page, and a Navbar badge, all gated behind login.
+
+Patterns to follow:
+
+- React Context + `useState` + localStorage for shared persistent state (see `src/context/AuthContext.js`)
+- Absolutely-positioned button overlay on a card (see `src/components/CarouselSlide.js` overlay pattern)
+- Auth gate via `AuthModal` before performing an action (see `src/pages/CartPage.js` `handlePayment`)
+- Inline style objects as `const styles = {}` at the bottom of each file (see every component)
+
+Interface contracts:
+
+- `useWishlist(): { items: Product[], toggleWishlist(product: Product): void, isWishlisted(id: number): boolean, wishlistCount: number }`
+- `Product: { id: number, name: string, price: number, description: string, image: string, category: string, featured?: boolean }`
+- `shopWishlist_${username}: Product[]` — localStorage key, one per user
+- Route: `/wishlist` → `<WishlistPage />`
+
+Done criteria:
+[ ] Clicking the heart on a `ProductCard` when logged in adds the product to `items` and `isWishlisted(product.id)` returns `true`; clicking again removes it and returns `false` (`expect(isWishlisted(id)).toBe(true/false)`)
+[ ] Clicking the heart on a `ProductCard` when logged out opens `AuthModal` and does NOT call `toggleWishlist` (`expect(screen.getByPlaceholderText('Username')).toBeInTheDocument()`)
+[ ] `WishlistPage` at `/wishlist` renders one row per item in `items`; shows a "Your wishlist is empty." message when `items` is empty (`expect(rows).toHaveLength(n)`)
+[ ] Clicking "Add to Cart" on a `WishlistPage` row calls `addToCart(product, 1)` and the item remains in `items` (`expect(addToCart).toHaveBeenCalledWith(product, 1)` and `expect(isWishlisted(id)).toBe(true)`)
+[ ] Navbar renders a wishlist link showing `wishlistCount` when `currentUser` is set; the link is absent when logged out (`expect(screen.getByText(/wishlist/i)).toBeInTheDocument()`)
+[ ] `toggleWishlist` writes the updated `Product[]` to `localStorage.getItem('shopWishlist_${username}')` on every call (`expect(JSON.parse(localStorage.getItem(key))).toHaveLength(n)`)
+[ ] On page reload with `shopWishlist_${username}` pre-seeded in localStorage, `items` is initialised from that key (`expect(items).toHaveLength(n)`)
+
+Out of scope: moving item from wishlist to cart, wishlist on ProductDetailPage, URL sharing, sorting/filtering wishlist, backend API sync, duplicate-username edge cases
+
+ADRs:
+
+- `WishlistContext` placed inside `AuthProvider` in `App.js` — needs `currentUser` to derive the localStorage key; must sit below `AuthProvider` in the tree
+- `shopWishlist_${username}` per-user key — prevents one user's wishlist leaking into another's session
+- Full `Product` objects stored (not just IDs) — avoids a products lookup on load; products.js is static so no staleness risk
+- Heart rendered as an absolutely-positioned `button` overlay on `ProductCard` — no card layout change; card click-to-navigate still works via the outer div
+- Wishlist Navbar link hidden when logged out — feature is auth-gated; a zero-count link with no function would mislead anonymous users
