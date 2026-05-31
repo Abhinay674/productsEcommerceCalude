@@ -70,9 +70,9 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the unit price for each cart entry', () => {
-    // Use quantity 2 so unit price ($10.00) ≠ line total ($20.00), avoiding ambiguity
+    // Use quantity 2 so unit price (₹10.00) ≠ line total (₹20.00), avoiding ambiguity
     renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
-    expect(screen.getByText('$10.00')).toBeInTheDocument();
+    expect(screen.getByText('₹10.00')).toBeInTheDocument();
   });
 
   test('renders the quantity for each cart entry', () => {
@@ -81,11 +81,11 @@ describe('CartPage — item rows', () => {
   });
 
   test('renders the line total (price × quantity) for each entry', () => {
-    // Use quantity 2: line total $20.00 is distinct from unit price $10.00 and grand total $20.00
+    // Use quantity 2: line total ₹20.00 is distinct from unit price ₹10.00 and grand total ₹20.00
     // Use getAllByText since line total equals grand total when only one item is present
     renderWithCart([{ product: mockProducts[0], quantity: 2 }]);
     // 10.00 * 2 = 20.00 — appears as both line total and grand total
-    expect(screen.getAllByText('$20.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('₹20.00').length).toBeGreaterThanOrEqual(1);
   });
 
   test('renders one row per distinct cart entry', () => {
@@ -132,7 +132,7 @@ describe('CartPage — increment', () => {
     // before: 2 × 10.00 = 20.00
     fireEvent.click(screen.getByRole('button', { name: /\+/ }));
     // after:  3 × 10.00 = 30.00 (appears as both line total and grand total)
-    expect(screen.getAllByText('$30.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('₹30.00').length).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -147,12 +147,12 @@ describe('CartPage — grand total', () => {
       { product: mockProducts[1], quantity: 3 },  //  5.50 * 3 = 16.50
     ]);
     // grand total = 36.50
-    expect(screen.getByText('$36.50')).toBeInTheDocument();
+    expect(screen.getByText('₹36.50')).toBeInTheDocument();
   });
 
-  test('grand total is $0.00 when cart is empty', () => {
+  test('grand total is ₹0.00 when cart is empty', () => {
     renderWithCart([]);
-    expect(screen.getByText('$0.00')).toBeInTheDocument();
+    expect(screen.getByText('₹0.00')).toBeInTheDocument();
   });
 });
 

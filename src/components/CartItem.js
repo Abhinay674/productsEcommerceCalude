@@ -9,13 +9,13 @@ const CartItem = ({ item, onUpdate }) => {
     <div style={styles.row}>
       <img src={product.image} alt={product.name} style={styles.thumb} />
       <div style={styles.name}>{product.name}</div>
-      <div style={styles.price}>${unitPrice}</div>
+      <div style={styles.price}>₹{unitPrice}</div>
       <div style={styles.stepper}>
         <button style={styles.stepBtn} onClick={() => onUpdate(quantity - 1)}>−</button>
         <span style={styles.qty}>{quantity}</span>
         <button style={styles.stepBtn} onClick={() => onUpdate(quantity + 1)}>+</button>
       </div>
-      <div style={styles.total}>${lineTotal}</div>
+      <div style={styles.total}>₹{lineTotal}</div>
     </div>
   );
 };

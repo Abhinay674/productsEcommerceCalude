@@ -13,10 +13,10 @@ describe('CartItem', () => {
     expect(screen.getByText('Test Widget')).toBeInTheDocument();
   });
 
-  test('displays the unit price formatted as $X.XX', () => {
+  test('displays the unit price formatted as ₹X.XX', () => {
     const onUpdate = jest.fn();
     render(<CartItem item={makeItem()} onUpdate={onUpdate} />);
-    expect(screen.getByText('$9.99')).toBeInTheDocument();
+    expect(screen.getByText('₹9.99')).toBeInTheDocument();
   });
 
   test('displays the current quantity', () => {
@@ -29,7 +29,7 @@ describe('CartItem', () => {
     const onUpdate = jest.fn();
     render(<CartItem item={makeItem(2)} onUpdate={onUpdate} />);
     // 9.99 * 2 = 19.98
-    expect(screen.getByText('$19.98')).toBeInTheDocument();
+    expect(screen.getByText('₹19.98')).toBeInTheDocument();
   });
 
   test('clicking "−" calls onUpdate with quantity - 1', () => {
@@ -57,6 +57,6 @@ describe('CartItem', () => {
     const onUpdate = jest.fn();
     render(<CartItem item={makeItem(4)} onUpdate={onUpdate} />);
     // 9.99 * 4 = 39.96
-    expect(screen.getByText('$39.96')).toBeInTheDocument();
+    expect(screen.getByText('₹39.96')).toBeInTheDocument();
   });
 });

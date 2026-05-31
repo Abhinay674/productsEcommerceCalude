@@ -5,7 +5,7 @@ import CartItem from '../components/CartItem';
 import AuthModal from '../components/AuthModal';
 
 const CartPage = () => {
-  const { items, updateQuantity } = useCart();
+  const { items, updateQuantity, clearCart } = useCart();
   const { currentUser } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -20,6 +20,7 @@ const CartPage = () => {
       return;
     }
     window.alert('Order placed successfully!');
+    clearCart();
   };
 
   return (
@@ -40,7 +41,7 @@ const CartPage = () => {
       )}
       <div style={styles.footer}>
         <div style={styles.total}>
-          Grand Total: <span style={styles.totalAmount}>${grandTotal.toFixed(2)}</span>
+          Grand Total: <span style={styles.totalAmount}>₹{grandTotal.toFixed(2)}</span>
         </div>
         <button
           style={{ ...styles.payBtn, ...(items.length === 0 ? styles.payBtnDisabled : {}) }}
@@ -57,6 +58,7 @@ const CartPage = () => {
         onSuccess={() => {
           setModalOpen(false);
           window.alert('Order placed successfully!');
+          clearCart();
         }}
       />
     </div>
