@@ -153,7 +153,7 @@ ADRs:
 
 ---
 
-## #005 Auth Gate & User Accounts — status: todo
+## #005 Auth Gate & User Accounts — status: done
 
 Why: Users can place orders without any identity, making it impossible to associate orders with accounts.
 What: Add localStorage-backed login/register with a modal auth gate on "Proceed to Payment" and persistent auth state in the Navbar.

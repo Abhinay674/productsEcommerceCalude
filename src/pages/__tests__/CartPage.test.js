@@ -2,8 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider, useCart } from '../../context/CartContext';
+import { AuthProvider } from '../../context/AuthContext';
 import CartPage from '../../pages/CartPage';
 import Navbar from '../../components/Navbar';
+
+jest.mock('react-toastify', () => ({
+  toast: { error: jest.fn() },
+}));
+
+beforeEach(() => {
+  localStorage.clear();
+});
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -30,10 +39,12 @@ const CartSetup = ({ entries }) => {
 const renderWithCart = (entries = []) =>
   render(
     <MemoryRouter initialEntries={['/cart']}>
-      <CartProvider>
-        {entries.length > 0 && <CartSetup entries={entries} />}
-        <CartPage />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          {entries.length > 0 && <CartSetup entries={entries} />}
+          <CartPage />
+        </CartProvider>
+      </AuthProvider>
     </MemoryRouter>
   );
 
@@ -150,7 +161,8 @@ describe('CartPage — grand total', () => {
 // ---------------------------------------------------------------------------
 
 describe('CartPage — Proceed to Payment', () => {
-  test('clicking "Proceed to Payment" shows an alert with success message', () => {
+  test('clicking "Proceed to Payment" shows an alert when logged in', () => {
+    localStorage.setItem('shopCurrentUser', JSON.stringify({ name: 'Alice', username: 'alice' }));
     const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
     renderWithCart([{ product: mockProducts[0], quantity: 1 }]);
     fireEvent.click(screen.getByRole('button', { name: /proceed to payment/i }));
@@ -167,13 +179,15 @@ describe('Navbar — Cart link navigates to /cart', () => {
   test('clicking the Cart link in the Navbar renders the CartPage at /cart', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <CartProvider>
-          <Navbar />
-          <Routes>
-            <Route path="/"     element={<div>Home</div>} />
-            <Route path="/cart" element={<CartPage />} />
-          </Routes>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <Routes>
+              <Route path="/"     element={<div>Home</div>} />
+              <Route path="/cart" element={<CartPage />} />
+            </Routes>
+          </CartProvider>
+        </AuthProvider>
       </MemoryRouter>
     );
 

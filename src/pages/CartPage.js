@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import CartItem from '../components/CartItem';
+import AuthModal from '../components/AuthModal';
 
 const CartPage = () => {
   const { items, updateQuantity } = useCart();
+  const { currentUser } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const grandTotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
+
+  const handlePayment = () => {
+    if (!currentUser) {
+      setModalOpen(true);
+      return;
+    }
+    window.alert('Order placed successfully!');
+  };
 
   return (
     <div style={styles.page}>
@@ -33,11 +45,20 @@ const CartPage = () => {
         <button
           style={{ ...styles.payBtn, ...(items.length === 0 ? styles.payBtnDisabled : {}) }}
           disabled={items.length === 0}
-          onClick={() => window.alert('Order placed successfully!')}
+          onClick={handlePayment}
         >
           Proceed to Payment
         </button>
       </div>
+      <AuthModal
+        isOpen={modalOpen}
+        initialTab="login"
+        onClose={() => setModalOpen(false)}
+        onSuccess={() => {
+          setModalOpen(false);
+          window.alert('Order placed successfully!');
+        }}
+      />
     </div>
   );
 };

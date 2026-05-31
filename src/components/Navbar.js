@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import HamburgerMenu from './HamburgerMenu';
 
 const Navbar = () => {
   const { cartCount } = useCart();
+  const { currentUser, logout } = useAuth();
 
   return (
     <nav style={styles.nav}>
@@ -12,12 +14,25 @@ const Navbar = () => {
         <HamburgerMenu />
         <Link to="/" style={styles.brand}>ShopReact</Link>
       </div>
-      <Link to="/cart" style={styles.cartLink}>
-        Cart
-        {cartCount > 0 && (
-          <span style={styles.badge}>{cartCount}</span>
+      <div style={styles.right}>
+        {currentUser ? (
+          <>
+            <span style={styles.username}>{currentUser.username}</span>
+            <button style={styles.authBtn} onClick={logout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" style={styles.authBtn}>Login</Link>
+            <Link to="/register" style={styles.authBtn}>Register</Link>
+          </>
         )}
-      </Link>
+        <Link to="/cart" style={styles.cartLink}>
+          Cart
+          {cartCount > 0 && (
+            <span style={styles.badge}>{cartCount}</span>
+          )}
+        </Link>
+      </div>
     </nav>
   );
 };
@@ -38,6 +53,26 @@ const styles = {
   left: {
     display: 'flex',
     alignItems: 'center',
+  },
+  right: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  username: {
+    color: '#fff',
+    fontSize: '14px',
+    fontWeight: '600',
+  },
+  authBtn: {
+    background: 'none',
+    border: '1px solid rgba(255,255,255,0.4)',
+    borderRadius: '6px',
+    color: '#fff',
+    padding: '5px 12px',
+    fontSize: '13px',
+    cursor: 'pointer',
+    textDecoration: 'none',
   },
   brand: {
     color: '#fff',
