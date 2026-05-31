@@ -370,7 +370,7 @@ ADRs:
 
 ---
 
-## #011 Pagination on Product Listing Page — status: todo
+## #011 Pagination on Product Listing Page — status: done
 
 Why: Users browsing all 50 products must scroll through a single unbounded grid with no way to navigate discrete pages.
 What: Add client-side pagination to ProductListingPage showing 8 products per page with Prev/Next buttons and numbered page buttons driven by local state.

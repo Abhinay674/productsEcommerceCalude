@@ -117,7 +117,7 @@ const ProductListingPage = () => {
                 style={styles.navBtn(currentPage === 1)}
                 onClick={() => setCurrentPage(p => p - 1)}
                 disabled={currentPage === 1}
-                aria-label="Previous"
+                aria-label="Previous page"
               >
                 Previous
               </button>
@@ -135,7 +135,7 @@ const ProductListingPage = () => {
                 style={styles.navBtn(currentPage === totalPages)}
                 onClick={() => setCurrentPage(p => p + 1)}
                 disabled={currentPage === totalPages}
-                aria-label="Next"
+                aria-label="Next page"
               >
                 Next
               </button>
