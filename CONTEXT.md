@@ -1,5 +1,19 @@
 # CONTEXT.md
 
+## Back to Top Button Feature
+
+### BackToTop component
+A self-contained floating button at `src/components/BackToTop.js`.
+- No props — manages its own scroll listener via `useEffect` with cleanup
+- `visible: boolean` state — `true` when `window.scrollY > 300`
+- Renders `null` when `visible` is false; renders the `↑` button when true
+- On click: `window.scrollTo({ top: 0, behavior: 'smooth' })`
+- Style: `position: fixed`, `bottom: 24px`, `right: 24px`, `zIndex: 99` (below Navbar's `zIndex: 100`)
+- Appearance: 40×40px circular button, `#1a1a2e` background, `#fff` text — fixed colors, no `useTheme()` needed
+- Placed inside `AppShell` in `src/App.js` after the `<Routes>` block
+
+---
+
 ## Star Ratings Feature
 
 ### StarRating component
