@@ -1,8 +1,18 @@
-GATE 5 VERDICT: APPROVE
+GATE 1 VERDICT: APPROVE_PLAN
+All checks passed. Tester can proceed.
 
-Summary: Feature #009 delivers a well-layered StarRating component that is purely presentational (imports only React and useTheme), correctly wired into both ProductCard and ProductDetailPage via a single product.rating prop, with all 50 products carrying valid rating values. The half-star algorithm correctly handles exact 0.5 inputs (hasHalf path) and rounds all other values to the nearest integer (Math.round path), producing correct star counts in all tested scenarios. All four data-testid attributes (star-full, star-half, star-empty, star-rating-label) are present, color values match the spec (#f5a623 gold fill, #ccc empty, #555/#aaa label via useTheme), and all five done criteria are covered by 184 passing tests across three new test files that use only data-testid queries and no jest.mock() module replacement.
+LAYERING:
+[YES] BackToTop is self-contained — no context imports, no data imports, no props
+[YES] Scroll logic stays inside BackToTop's useEffect — not in App.js or a page
+[YES] App.js change is only adding <BackToTop /> — no scroll logic in App.js
 
----
+INTERFACE CONTRACTS:
+[YES] Component name and signature match BACKLOG: BackToTop() with no props
+[YES] Threshold is exactly window.scrollY > 300
+[YES] Click handler is exactly window.scrollTo({ top: 0, behavior: 'smooth' })
+[YES] aria-label="Back to top" planned
 
-Coverage check note (Step 10):
-coverage-check.js flagged 25 criteria from prior completed features (#001–#008). These are fully covered by those features' own test suites and are out of scope for feature #009. No action required — pipeline continues.
+COMPLETENESS:
+[YES] All 5 done criteria have at least one planned element addressing them
+[YES] Style values present: position fixed, bottom 32px, right 32px, zIndex 99, colors #1a1a2e / #fff
+[YES] Build order correct: BackToTop.js before App.js modification
