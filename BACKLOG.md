@@ -443,7 +443,7 @@ ADRs:
 
 ---
 
-## #013 Product Review Form — status: todo
+## #013 Product Review Form — status: done
 
 Why: Users can see a static star rating on the product detail page but have no way to contribute their own reviews or read what others have written.
 What: Add an auth-gated review form below the product info on ProductDetailPage with a clickable 1–5 star picker and textarea, persisting submitted reviews to localStorage and displaying them immediately.
