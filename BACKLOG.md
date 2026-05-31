@@ -188,3 +188,36 @@ ADRs:
 - `onSuccess` callback on `AuthModal` triggers payment in `CartPage` — decouples the modal from payment logic; modal only signals success, caller decides what to do
 - Passwords stored plaintext in `shopUsers` localStorage — no backend exists; this is a frontend-only demo with no security requirement
 - `react-toastify` added as a runtime dependency; `<ToastContainer />` placed once in `App.js` — single source of toast rendering, consistent with library convention
+
+---
+
+## #006 Product Search Bar — status: todo
+
+Why: Users must scroll all 50 products with no way to narrow results by name.
+What: Add a real-time name-filter input above the product grid on the homepage that hides the carousel while active and shows an empty state on no match.
+
+Patterns to follow:
+
+- `Array.filter()` in component body with no external state (see `src/pages/CategoryPage.js`)
+- Inline style objects as `const styles = {}` at the bottom of the file (see `src/pages/ProductListingPage.js`)
+
+Interface contracts:
+
+- `query: string` — local `useState('')` in `ProductListingPage`
+- `filteredProducts: Product[]` — `products.filter(p => p.name.toLowerCase().includes(query.toLowerCase().trim()))`
+- No new files, no new routes — all changes confined to `src/pages/ProductListingPage.js`
+
+Done criteria:
+[ ] Typing "head" into the search input renders only ProductCards whose name contains "head" (case-insensitive) (`expect(cards).toHaveLength(n)`)
+[ ] The product grid updates on every keystroke without pressing Enter (`fireEvent.change` → assert card count changes immediately)
+[ ] `FeaturedCarousel` is not present in the DOM when `query` is non-empty (`expect(carousel).not.toBeInTheDocument()`)
+[ ] When no product names match the query, a "No products found" message is rendered and the grid is empty (`expect(screen.getByText(/no products found/i)).toBeInTheDocument()`)
+[ ] Clearing the search input (setting value to '') restores all 50 ProductCards and the FeaturedCarousel (`expect(cards).toHaveLength(50)` and `expect(carousel).toBeInTheDocument()`)
+
+Out of scope: search on CategoryPage, filtering by description/price/category, URL persistence, debouncing, autocomplete
+
+ADRs:
+
+- `useState` local to `ProductListingPage` chosen over context — query has no consumers outside this page
+- `String.includes` (case-insensitive, trimmed) chosen over regex — sufficient for name substring match, no escaping edge cases
+- Carousel hidden via `{!query && <FeaturedCarousel />}` — single conditional expression, no extra boolean flag needed
