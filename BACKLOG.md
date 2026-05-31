@@ -264,7 +264,7 @@ ADRs:
 
 ---
 
-## #008 Dark Mode Toggle — status: todo
+## #008 Dark Mode Toggle — status: in-progress
 
 Why: Users cannot switch the app to a dark color scheme and any preference is lost on page reload.
 What: Add a localStorage-backed ThemeContext with a 🌙/☀️ toggle button in the Navbar that switches all page content between light and dark color tokens.
