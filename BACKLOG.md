@@ -335,7 +335,7 @@ ADRs:
 
 ---
 
-## #010 Back to Top Floating Button — status: todo
+## #010 Back to Top Floating Button — status: in-progress
 
 Why: Users scrolling through long product listing pages have no quick way to return to the top without manually scrolling all the way back.
 What: Add a self-contained BackToTop component that appears as a fixed ↑ button after 300px of scroll and smoothly scrolls to top on click, rendered on every page via AppShell.
