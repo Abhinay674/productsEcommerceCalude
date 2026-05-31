@@ -300,7 +300,7 @@ ADRs:
 
 ---
 
-## #009 Star Ratings on Product Cards and Detail Page — status: todo
+## #009 Star Ratings on Product Cards and Detail Page — status: in-progress
 
 Why: Users cannot assess product quality at a glance — no rating information is shown anywhere in the app.
 What: Add a rating: number field to all 50 products and a reusable StarRating component rendering half-star-precise stars with a numeric label on ProductCard and ProductDetailPage.
