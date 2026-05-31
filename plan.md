@@ -1,123 +1,97 @@
-﻿# Plan — Feature #008 Dark Mode Toggle
+# Plan — Feature #009 Star Ratings on Product Cards and Detail Page
 
 ## New files to create
 
-- `src/context/ThemeContext.js` — ThemeProvider + useTheme hook, localStorage-backed with key `shopTheme`
+- `src/components/StarRating.js` — standalone presentational component; accepts `rating: number`; renders up to 5 stars using the half-star overlay technique; shows a numeric label; uses `useTheme()` for label color; no context/data imports beyond ThemeContext.
 
 ## Files to modify
 
-### `src/App.js`
-- Import `ThemeProvider` from `./context/ThemeContext`
-- Wrap everything inside `<ThemeProvider>` as the outermost provider (outside `<AuthProvider>`)
-- Move the root div into an inner component (e.g. `AppShell`) so it can call `useTheme()` and apply the theme-reactive page background: `#f7f7f7` (light) → `#121212` (dark)
-- Replace hardcoded `background: '#f7f7f7'` on the root div with the dynamic token
+- `src/data/products.js`
+  - Add `rating: number` field to every product object (all 50 products).
+  - Values range between 3.0 and 5.0, increments of 0.5 or 0.1 as appropriate.
+  - No other changes to the data shape.
 
-### `src/components/Navbar.js`
-- Import `useTheme`
-- Add a toggle button in the `right` section (always rendered regardless of `currentUser` value)
-- Button displays `🌙` when `isDark` is false; `☀️` when `isDark` is true; calls `toggleTheme` on click
-- No background color change needed — `#1a1a2e` is a fixed brand color per ADR
+- `src/components/ProductCard.js`
+  - Import `StarRating` from `./StarRating`.
+  - Render `<StarRating rating={product.rating} />` inside `styles.body`, between the name `<p>` and the price `<p>`.
+  - No style-object changes required beyond adding the import and JSX line.
 
-### `src/components/ProductCard.js`
-- Import `useTheme`; move `const styles = {}` inside the component body, computed from `isDark`
-- `card.background`: `#fff` (light) → `#1e1e1e` (dark)
-- `name` color: `#222` (light) → `#e0e0e0` (dark)
-- `heartBtn` background: `rgba(255,255,255,0.85)` (light) → `rgba(30,30,30,0.85)` (dark)
+- `src/pages/ProductDetailPage.js`
+  - Import `StarRating` from `../components/StarRating`.
+  - Render `<StarRating rating={product.rating} />` inside `styles.info`, between the price `<p>` and the description `<p>`.
+  - No style-object changes required beyond adding the import and JSX line.
 
-### `src/pages/ProductListingPage.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `searchInput` border: `1px solid #ddd` (light) → `1px solid #444` (dark)
-- `searchInput` background: `#fff` (light) → `#2a2a2a` (dark)
-- `searchInput` color (text): add explicit `#222` (light) → `#e0e0e0` (dark)
-- `empty` color: `#555` (light) → `#aaa` (dark)
+## Component props (exact)
 
-### `src/pages/ProductDetailPage.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `backBtn` color: `#444` → `#555` (light) → `#aaa` (dark)
-- `backBtn` border: `1px solid #ccc` (light) → `1px solid #444` (dark)
-- `name` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `description` color: `#555` (light) → `#aaa` (dark)
-- `stepBtn` background: `#f5f5f5` (light) → `#2a2a2a` (dark); border: `1px solid #ccc` (light) → `1px solid #444` (dark)
-- `addBtn` background: `#1a1a2e` is brand color — leave unchanged
-
-### `src/pages/CartPage.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `empty` color: `#555` (light) → `#aaa` (dark)
-- `footer` background: `#fff` (light) → `#1e1e1e` (dark)
-- `total` color: `#444` → secondary text token: `#555` (light) → `#aaa` (dark)
-- `totalAmount` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-
-### `src/pages/CategoryPage.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-
-### `src/pages/WishlistPage.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `heading` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `empty` color: `#555` (light) → `#aaa` (dark)
-- `row` background: `#fff` (light) → `#1e1e1e` (dark)
-- `name` color: `#222` (light) → `#e0e0e0` (dark)
-- `addBtn` background: `#1a1a2e` is brand color — leave unchanged
-
-### `src/components/CartItem.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `row` background: `#fff` (light) → `#1e1e1e` (dark)
-- `name` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `price` color: `#555` (light) → `#aaa` (dark)
-- `qty` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `total` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-
-### `src/components/HamburgerMenu.js`
-- No changes required — drawer uses `#16213e` (brand-adjacent navy) with `#fff` text; works on both themes as the drawer floats over the navbar area
-
-### `src/components/AuthModal.js`
-- Import `useTheme`; move `const styles = {}` inside the component body
-- `modal` background: `#fff` (light) → `#1e1e1e` (dark)
-- `closeBtn` color: `#555` (light) → `#aaa` (dark)
-- `tabs` borderBottom: `2px solid #eee` (light) → `2px solid #444` (dark)
-- `activeTab` color: `#1a1a2e` → primary text token: `#222` (light) → `#e0e0e0` (dark)
-- `input` border: `1px solid #ddd` (light) → `1px solid #444` (dark)
-- `input` background: add explicit `#fff` (light) → `#2a2a2a` (dark)
-- `input` color: add explicit `#222` (light) → `#e0e0e0` (dark)
-
-### `src/components/CarouselSlide.js`
-- No changes required — overlay uses a dark gradient on top of an image; `#fff` name and `#f0c040` price sit on that overlay and are unaffected by page theme
-
-## Hook contracts (exact signatures)
-
-```js
-useTheme(): { isDark: boolean, toggleTheme(): void }
+```
+StarRating({ rating: number }): JSX.Element
 ```
 
-## Context shape (exact)
+- `rating` — raw numeric rating from the product object (e.g. 4.2, 4.5, 3.0).
+- No other props. The component derives everything it needs internally.
 
-ThemeContext provides: `{ isDark: boolean, toggleTheme(): void }`
+## Half-star algorithm (exact)
 
-## Color tokens (exact)
+```
+function renderStars(rating):
+  rounded    = Math.round(rating * 2) / 2      // nearest 0.5
+  fullStars  = Math.floor(rounded)             // integer part
+  hasHalf    = (rounded % 1 === 0.5)           // true when .5 remainder
+  emptyStars = 5 - fullStars - (hasHalf ? 1 : 0)
 
-| Element         | Light    | Dark     |
-|-----------------|----------|----------|
-| Page background | #f7f7f7  | #121212  |
-| Card background | #fff     | #1e1e1e  |
-| Primary text    | #222     | #e0e0e0  |
-| Secondary text  | #555     | #aaa     |
-| Input border    | #ddd     | #444     |
-| Input bg        | #fff     | #2a2a2a  |
-| Navbar bg       | #1a1a2e  | #1a1a2e  (fixed, never changes) |
-| Accent          | #e94560  | #e94560  (unchanged) |
+  stars = []
+
+  repeat fullStars times:
+    stars.push(<FullStar />)                   // solid star in gold #f5a623
+
+  if hasHalf:
+    stars.push(<HalfStar />)                   // two overlapping spans,
+                                               // front span clips to 50% width
+
+  repeat emptyStars times:
+    stars.push(<EmptyStar />)                  // star in gray #ccc
+
+  return (
+    <span>
+      {stars}
+      <span style={{ color: labelColor, marginLeft: '4px', fontSize: '13px' }}>
+        {rounded.toFixed(1)}
+      </span>
+    </span>
+  )
+```
+
+Half-star implementation detail — two overlapping `<span>` elements, both containing the star character:
+
+```
+// Outer wrapper: position relative, display inline-block, width/height of one star
+//   Back span  (empty layer): position absolute, top 0, left 0; color #ccc
+//   Front span (gold layer):  position absolute, top 0, left 0; color #f5a623;
+//                             overflow hidden; width 50%
+```
+
+## Color values (exact)
+
+| Token                      | Value     | Usage                                        |
+|----------------------------|-----------|----------------------------------------------|
+| Star fill                  | `#f5a623` | Full stars and the filled half of half-star  |
+| Star empty                 | `#ccc`    | Empty stars and the back layer of half-star  |
+| Numeric label (dark mode)  | `#aaa`    | When `isDark === true`                       |
+| Numeric label (light mode) | `#555`    | When `isDark === false`                      |
+
+Label color is derived from `useTheme()`:
+
+```js
+const { isDark } = useTheme();
+const labelColor = isDark ? '#aaa' : '#555';
+```
+
+These exact values match the secondary-text convention already used in `ProductDetailPage.js` (`styles.description`) and `CartItem.js` (`styles.price`).
 
 ## Build order
 
-1. **`src/context/ThemeContext.js`** (new) — create ThemeProvider and useTheme; reads `localStorage.getItem('shopTheme') === 'dark'` for initial state; writes on every toggle
-2. **`src/App.js`** — wrap with `<ThemeProvider>` as outermost provider; add inner `AppShell` component to call `useTheme()` and apply dynamic page background token
-3. **`src/components/Navbar.js`** — add 🌙/☀️ toggle button calling `toggleTheme()`; always rendered regardless of auth state
-4. **`src/components/ProductCard.js`** — apply card background and text tokens
-5. **`src/pages/ProductListingPage.js`** — apply heading, input, and empty-state tokens
-6. **`src/pages/ProductDetailPage.js`** — apply text, border, and step-button tokens
-7. **`src/pages/CartPage.js`** — apply heading, empty, footer card, and total tokens
-8. **`src/pages/CategoryPage.js`** — apply heading token
-9. **`src/pages/WishlistPage.js`** — apply heading, row card, and name tokens
-10. **`src/components/CartItem.js`** — apply row card and text tokens
-11. **`src/components/AuthModal.js`** — apply modal card, input, and text tokens
+1. **`src/data/products.js`** — Add `rating` field to all 50 products first; downstream components depend on `product.rating` being defined.
+2. **`src/components/StarRating.js`** — Create the standalone component; verify half-star logic against the key test cases (rating 4.5 -> 4 full + 1 half + 0 empty; rating 4.2 -> rounds to 4.0 -> 4 full + 0 half + 1 empty) before wiring it in.
+3. **`src/components/ProductCard.js`** — Import and render `<StarRating rating={product.rating} />` in the card body between name and price.
+4. **`src/pages/ProductDetailPage.js`** — Import and render `<StarRating rating={product.rating} />` in the detail info panel between price and description.
+5. **Manual verification** — Confirm all five done criteria: correct star counts for 4.5 and 4.2, numeric label present on both pages, label color correct in dark and light themes.
