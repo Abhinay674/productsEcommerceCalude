@@ -297,3 +297,38 @@ ADRs:
 - Navbar background (#1a1a2e) excluded from theme tokens — it is a brand color, not a theme-reactive surface
 - Accent color (#e94560) excluded from theme tokens — sufficient contrast on both #fff and #1e1e1e card backgrounds
 - localStorage key shopTheme follows shopXxx naming convention used by shopCurrentUser, shopUsers, and shopWishlist_${username}
+
+---
+
+## #009 Star Ratings on Product Cards and Detail Page — status: todo
+
+Why: Users cannot assess product quality at a glance — no rating information is shown anywhere in the app.
+What: Add a rating: number field to all 50 products and a reusable StarRating component rendering half-star-precise stars with a numeric label on ProductCard and ProductDetailPage.
+
+Patterns to follow:
+
+- Purely presentational component receiving all data via props, no context or data imports (see src/components/CartItem.js)
+- Inline style objects computed inside the component function using useTheme() for dark-mode tokens (see src/components/ProductCard.js)
+
+Interface contracts:
+
+- StarRating({ rating: number }): JSX.Element
+- Product (extended): { id: number, name: string, price: number, description: string, image: string, category: string, featured?: boolean, rating: number }
+- Half-star logic: round rating to nearest 0.5; fullStars = Math.floor(rounded); hasHalf = rounded % 1 === 0.5; emptyStars = 5 - fullStars - (hasHalf ? 1 : 0)
+
+Done criteria:
+[ ] StarRating rendered inside ProductCard shows the correct numeric label for that product's rating (`expect(screen.getByText(String(product.rating))).toBeInTheDocument()`)
+[ ] StarRating rendered inside ProductDetailPage shows the correct numeric label (`expect(screen.getByText(String(product.rating))).toBeInTheDocument()`)
+[ ] A rating of 4.5 renders 4 full stars and 1 half star and 0 empty stars (`expect(fullStars).toBe(4)` and `expect(halfStars).toBe(1)`)
+[ ] A rating of 4.2 rounds to 4.0 and renders 4 full stars, 0 half stars, 1 empty star (`expect(fullStars).toBe(4)` and `expect(halfStars).toBe(0)`)
+[ ] StarRating numeric label uses color #aaa when isDark is true and #555 when isDark is false (`expect(label).toHaveStyle('color: #aaa')`)
+
+Out of scope: user-submitted ratings, sorting/filtering by rating, rating on WishlistPage rows or CategoryPage, review count display, animated fills, hover interactions
+
+ADRs:
+
+- rating: number added directly to products.js — no separate reviews file; avoids a lookup join for purely static display data
+- StarRating is a standalone presentational component — eliminates duplication between ProductCard and ProductDetailPage; receives only rating as a prop
+- Half-star rendered via two overlapping spans with overflow: hidden at 50% width — achieves visual half-star using only ★ and inline styles, consistent with no-CSS-file convention
+- Star fill color #f5a623 (gold), empty color #ccc (gray) — sufficient contrast on both #fff and #1e1e1e card backgrounds in light and dark mode
+- Numeric label uses secondary text token (#555 light / #aaa dark) via useTheme() — matches secondary text convention used across all existing components
