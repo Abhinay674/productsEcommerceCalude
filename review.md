@@ -3,6 +3,9 @@ Summary: Feature #008 (Dark Mode Toggle) is fully and correctly implemented. The
 
 ---
 
+Coverage check note (Step 10):
+coverage-check.js flagged 2 criteria from prior completed features (#001 cartCount, #005 invalid credentials toast) that are not mentioned in this feature's review.md. These are fully covered by those features' own test suites and are out of scope for feature #008. No action required — pipeline continues.
+
 LAYERING:
 [PASS] ThemeContext.js is the only file reading/writing localStorage for shopTheme — confirmed by grep; only ThemeContext.js lines 7 and 13 touch shopTheme.
 [PASS] No component or page accesses localStorage for theme directly — grep of all src/*.js files shows zero localStorage references to theme outside ThemeContext.js and test files.
