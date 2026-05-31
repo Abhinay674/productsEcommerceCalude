@@ -402,4 +402,42 @@ ADRs:
 - `currentPage` local `useState(1)` chosen over context — no consumers outside `ProductListingPage`; consistent with `query` state pattern in the same file
 - Page reset placed inside `setQuery` handler (`setQuery(v); setCurrentPage(1)`) — simpler than a `useEffect` dependency on `query`
 - Carousel condition updated from `!query` to `!query && currentPage === 1` — minimal one-token diff to existing line
+
+---
+
+## #012 User Profile Page — status: todo
+
+Why: Logged-in users have no way to view or update their name and email — the only visible identity is a plain username text in the Navbar.
+What: Add a /profile page showing avatar initials, name, username, and email with an inline edit form that persists changes to localStorage via AuthContext.
+
+Patterns to follow:
+
+- React Context mutation pattern: add `updateProfile` alongside existing `login`, `logout`, `register` in `src/context/AuthContext.js`
+- Inline style objects as `const styles = {}` with dark-mode tokens via `useTheme()` (see `src/pages/WishlistPage.js`)
+- Logged-out inline message pattern (see `src/pages/WishlistPage.js` empty-state message)
+
+Interface contracts:
+
+- `updateProfile(name: string, email: string): void` — added to `AuthContext`; matches `shopUsers` entry by `username`, overwrites `name` and `email`, writes updated `shopCurrentUser` and `shopUsers` to localStorage, calls `setCurrentUser`
+- `currentUser: { name: string, username: string, email?: string }` — extended shape
+- `shopUsers: Array<{ name: string, username: string, password: string, email?: string }>` — extended shape
+- `ProfilePage(): JSX.Element` — no props; owns `editing: boolean` local state
+- Route: `/profile` → `<ProfilePage />`
+
+Done criteria:
+[ ] Logged-out user visiting /profile sees "Please log in to view your profile." and no avatar or form (`expect(screen.getByText(/please log in/i)).toBeInTheDocument()`)
+[ ] Logged-in user sees avatar with correct initials derived from name (e.g. "John Doe" → "JD", "Alice" → "A") (`expect(screen.getByText('JD')).toBeInTheDocument()`)
+[ ] Logged-in user sees name, username, and email displayed; email shows "—" when not set (`expect(screen.getByText('—')).toBeInTheDocument()` when email absent)
+[ ] Clicking "Edit Profile" reveals inputs pre-filled with current name and email (`fireEvent.click(editBtn)` → `expect(nameInput.value).toBe(currentUser.name)`)
+[ ] Submitting the edit form calls `updateProfile` and writes updated name and email to both `shopCurrentUser` and `shopUsers` in localStorage (`expect(JSON.parse(localStorage.getItem('shopCurrentUser')).name).toBe('New Name')` and `expect(JSON.parse(localStorage.getItem('shopUsers'))[0].email).toBe('new@email.com')`)
+[ ] Navbar username is a `<Link>` to `/profile` when logged in (`expect(screen.getByRole('link', { name: currentUser.username })).toHaveAttribute('href', '/profile')`)
+
+Out of scope: password change, avatar image upload, email format validation, duplicate email prevention, username change, public profile URLs
+
+ADRs:
+
+- `updateProfile` added to `AuthContext` — keeps all localStorage mutation in one place; matches user by `username` which is immutable
+- `editing: boolean` local `useState(false)` in `ProfilePage` — no cross-component consumers; consistent with local state pattern used throughout
+- Avatar initials derived inline in component — single use site, no helper file needed
+- Navbar `<span>` → `<Link to="/profile">` with existing `cartLink` style — one-line diff, no new style token
 - All changes confined to `src/pages/ProductListingPage.js` — no new files, no new routes
