@@ -191,7 +191,7 @@ ADRs:
 
 ---
 
-## #006 Product Search Bar — status: todo
+## #006 Product Search Bar — status: done
 
 Why: Users must scroll all 50 products with no way to narrow results by name.
 What: Add a real-time name-filter input above the product grid on the homepage that hides the carousel while active and shows an empty state on no match.
